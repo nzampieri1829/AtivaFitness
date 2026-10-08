@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Página de Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+
+<body>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Logo -->
+    <img class="logo"
+         src="{{ url_for('static', filename='img/logo.png') }}"
+         alt="Ativa Fitness">
+
+    <!-- Frase da esquerda -->
+    <div class="frase">
+        <p>Disciplina hoje,</p>
+        <p>resultados <span>amanhã!</span></p>
+    </div>
+
+    <!-- Área do formulário -->
+    <main class="pagina-formulario">
+
+        <div class="cabecalho-formulario">
+
+            <h2>Entrar na sua conta</h2>
+
+            <form action="{{ url_for('login') }}" method="post">
+
+                <label for="email">E-mail</label>
+
+                <div class="campo">
+                    <input type="email"
+                           id="email"
+                           name="email"
+                           placeholder="Digite seu e-mail">
+                </div>
+
+                <label for="senha">Senha</label>
+
+                <div class="campo">
+                    <input type="password"
+                           id="senha"
+                           name="senha"
+                           placeholder="Digite sua senha">
+                </div>
+
+                <a class="botao" href="">Entrar</a>
+
+            </form>
+
+            <p class="cadastro">
+                Não tem uma conta?
+                <a href="{{ url_for('novo_usuario') }}">Cadastre-se</a>
+            </p>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

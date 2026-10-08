@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cadastrar Usuário</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/cadastro.css') }}">
+</head>
+
+<body>
+
+    <main class="pagina-formulario">
+
+        <section class="lado-esquerdo">
+
+            <div class="conteudo-esquerdo">
+
+                <img class="logo"
+                     src="{{ url_for('static', filename='img/logo.png') }}"
+                     alt="ATIVA Fitness">
+
+                <h1>
+                    Mais que Treino,<br>
+                    é sua <span>Melhor Versão!</span>
+                </h1>
+
+                <div class="informacoes">
+
+                    <div class="informacao">
+
+                        <img src="{{ url_for('static', filename='img/icone-peso.png') }}"
+                             alt="">
+
+                        <div>
+                            <strong>Aulas Variadas</strong>
+                            <p>Para todos os níveis</p>
+                        </div>
+
+                    </div>
+
+                    <div class="informacao">
+
+                        <img src="{{ url_for('static', filename='img/icone-profissionais.png') }}"
+                             alt="">
+
+                        <div>
+                            <strong>Profissionais Qualificados</strong>
+                            <p>Acompanhamento de perto</p>
+                        </div>
+
+                    </div>
+
+                    <div class="informacao">
+
+                        <img src="{{ url_for('static', filename='img/icone-saude.png') }}"
+                             alt="">
+
+                        <div>
+                            <strong>Mais Saúde e Bem-Estar</strong>
+                            <p>No seu ritmo</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="lado-direito">
+
+            <div class="formulario">
+
+                <div class="topo">
+
+                    <span>Já tem uma conta?</span>
+
+                    <a href="{{ url_for('login') }}">Entrar</a>
+
+                </div>
+
+                <div class="cabecalho-formulario">
+
+                    <h2>Criar Conta</h2>
+
+                    <p>
+                        Preencha os dados abaixo para se cadastrar<br>
+                        na ATIVA Fitness
+                    </p>
+
+                </div>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+
+                    {% if messages %}
+
+                        <div class="flash-messages">
+
+                            {% for category, message in messages %}
+
+                                <div class="flash {{ category }}">
+                                    {{ message }}
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                {% endwith %}
+
+                <form action="{{ url_for('novo_usuario') }}" method="POST">
+
+                    <label for="nome">
+                        Nome completo
+                    </label>
+
+                    <div class="campo">
+
+                        <input type="text"
+                               id="nome"
+                               name="nome"
+                               placeholder="Digite seu nome completo"
+                               required>
+
+                    </div>
+
+                    <label for="email">
+                        E-mail
+                    </label>
+
+                    <div class="campo">
+
+                        <input type="email"
+                               id="email"
+                               name="email"
+                               placeholder="Digite seu e-mail"
+                               required>
+
+                    </div>
+
+                    <label for="senha">
+                        Senha
+                    </label>
+
+                    <div class="campo">
+
+                        <input type="password"
+                               id="senha"
+                               name="senha"
+                               minlength="8"
+                               placeholder="Digite sua senha"
+                               required>
+
+                    </div>
+
+                    <button type="submit" class="botao">
+                        Cadastrar
+                    </button>
+
+                </form>
+
+                <p class="termos">
+                    Ao se cadastrar, você concorda com nossos<br>
+                    <strong>Termos de Uso e Política de Privacidade.</strong>
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
+```

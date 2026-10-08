@@ -1,0 +1,205 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    /* Imagem do lado esquerdo */
+    background-image: url("../img/foto-lateral2.png");
+    background-repeat: no-repeat;
+    background-position: left top;
+    background-size: 40.3% 100%;
+    min-height: 100vh;
+}
+
+
+/* LOGO */
+
+.logo {
+    position: absolute;
+    width: 270px;
+    height: auto;
+    left: 115px;
+    top: 68px;
+}
+
+
+/* FRASE DA ESQUERDA */
+
+.frase {
+    position: absolute;
+    left: 28px;
+    bottom: 34px;
+    color: white;
+    font-size: 23px;
+    font-weight: bold;
+    line-height: 1.15;
+}
+
+.frase span {
+    color: #18b83a;
+}
+
+
+/* ÁREA DO FORMULÁRIO */
+
+.pagina-formulario {
+    width: 59.7%;
+    min-height: 100vh;
+    margin-left: 40.3%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* CAIXA DO LOGIN */
+
+.cabecalho-formulario {
+    width: 86%;
+    max-width: 590px;
+    min-height: 564px;
+    border: 2px solid #126b35;
+    border-radius: 10px;
+    padding: 80px 39px 40px;
+    background-color: white;
+    box-shadow: 0 2px 4px #999;
+}
+
+
+/* TÍTULO */
+
+.cabecalho-formulario h2 {
+    font-size: 35px;
+    color: #333;
+    margin-bottom: 50px;
+}
+
+
+/* FORMULÁRIO */
+
+form {
+    width: 100%;
+}
+
+
+/* LABELS */
+
+label {
+    display: block;
+    font-size: 16px;
+    color: #111;
+    margin-bottom: 9px;
+}
+
+
+/* CAMPO COM ÍCONE */
+
+.campo {
+    width: 100%;
+    height: 43px;
+    display: flex;
+    align-items: center;
+    background-color: #eeeeee;
+    border: 1px solid #aaa;
+    border-radius: 10px;
+    box-shadow: inset 0 1px 3px #bbb;
+    margin-bottom: 62px;
+}
+
+
+/* ÍCONE */
+
+.campo span {
+    width: 34px;
+    text-align: center;
+    font-size: 16px;
+    color: #222;
+}
+
+
+/* INPUT */
+
+input {
+    width: 100%;
+    height: 32px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-size: 13px;
+    margin-left: 7px;
+}
+
+
+/* TEXTO DO INPUT */
+
+input::placeholder {
+    color: #18b83a;
+}
+
+
+/* BOTÃO */
+
+.botao {
+
+    border: none;
+    border-radius: 9px;
+    background-color: #18b83a;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px ;
+    padding: 8px 230px;
+    margin-top: -2px;
+}
+
+
+button:hover {
+    background-color: #149b30;
+}
+
+
+/* TEXTO DE CADASTRO */
+
+.cadastro {
+    margin-top: 20px;
+    font-size: 13px;
+    color: #333;
+}
+
+
+/* LINK */
+
+.cadastro a {
+    color: #18b83a;
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: 8px;
+}
+
+
+.cadastro a:hover {
+    text-decoration: underline;
+}
+
+
+/* MENSAGENS DO FLASK */
+
+.flash-messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+
+
+.flash {
+    padding: 12px 20px;
+    border-radius: 8px;
+    background-color: #18b83a;
+    color: white;
+    margin-bottom: 10px;
+}
