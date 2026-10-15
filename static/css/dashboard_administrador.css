@@ -31,9 +31,7 @@ body {
     font-size: 14px;
 }
 
-/* =========================
-   MENU LATERAL
-========================= */
+/* MENU LATERAL */
 
 .menu-lateral {
     position: fixed;
@@ -139,17 +137,13 @@ body {
     font-weight: 500;
 }
 
-/* =========================
-   CABEÇALHO MOBILE
-========================= */
+/* CABEÇALHO MOBILE */
 
 .cabecalho-mobile {
     display: none;
 }
 
-/* =========================
-   CONTEÚDO PRINCIPAL
-========================= */
+/* CONTEÚDO PRINCIPAL*/
 
 .conteudo {
     flex: 1;
@@ -182,9 +176,7 @@ body {
     overflow: hidden;
 }
 
-/* =========================
-   DECORAÇÃO SUPERIOR
-========================= */
+/*DECORAÇÃO SUPERIOR */
 
 .decoracao-superior {
     position: absolute;
@@ -215,9 +207,7 @@ body {
     border-radius: 10px;
 }
 
-/* =========================
-   CABEÇALHO DO PAINEL
-========================= */
+/* CABEÇALHO DO PAINEL*/
 
 .cabecalho {
     position: relative;
@@ -269,9 +259,7 @@ body {
     object-fit: contain;
 }
 
-/* =========================
-   BOAS-VINDAS
-========================= */
+/* BOAS-VINDAS */
 
 .boas-vindas {
     position: relative;
@@ -298,9 +286,7 @@ body {
     line-height: 1.5;
 }
 
-/* =========================
-   CARDS DE INDICADORES
-========================= */
+/* CARDS DE INDICADORES*/
 
 .indicadores {
     position: relative;
@@ -376,9 +362,7 @@ body {
     white-space: nowrap;
 }
 
-/* =========================
-   ACESSO RÁPIDO
-========================= */
+/*ACESSO RÁPIDO */
 
 .acesso-rapido {
     position: relative;
@@ -450,17 +434,13 @@ body {
     background-color: #079A2A;
 }
 
-/* =========================
-   MENU INFERIOR
-========================= */
+/* MENU INFERIOR */
 
 .menu-inferior {
     display: none;
 }
 
-/* =========================
-   TABLETS
-========================= */
+/*TABLETS*/
 
 @media (min-width: 769px) {
     .painel {
@@ -543,9 +523,7 @@ body {
     }
 }
 
-/* =========================
-   CELULARES
-========================= */
+/* CELULARES*/
 
 @media (max-width: 425px) {
     body {
