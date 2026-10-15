@@ -271,19 +271,12 @@ body {
     gap: 10px;}
 
 
-
 /* Círculo dos ícones */
 
-.icone {
-    flex: 0 0 49px;
-    width: 49px;
-    height: 49px;
-    border-radius: 50%;
-    background-color: var(--verde-claro);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 25px;
+.icone img {
+    width: 75px;
+    height: 75px;
+
 }
 
 /* Nome e descrição da aula */

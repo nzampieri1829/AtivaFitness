@@ -419,5 +419,11 @@ def grade_de_aulas():
     return render_template('grade_de_aulas.html')
 
 
+#Dashboard administrador
+@app.route('/dashboard_administrador', methods=['GET', 'POST'])
+def dashboard_administrador():
+    return render_template('dashboard_administrador.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True)

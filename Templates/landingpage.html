@@ -4,17 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>ATIVA Fitness</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style1.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landingpage.css') }}">
 </head>
 <body>
 
 <!-- Parte principal -->
     <div class="inicio">
         <div class="fundo">
+
             <!-- Menu -->
+
             <header>
                 <a href="#" class="logo">
+
+                    <a href="{{ url_for('dashboard_administrador') }}">
                     <img src="{{ url_for('static', filename='img/logobranca.png') }}" alt="ATIVA Fitness">
+                    </a>
+
                 </a>
 
                 <nav>

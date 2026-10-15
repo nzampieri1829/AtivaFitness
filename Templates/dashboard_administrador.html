@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Início - ATIVA Fitness</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/dashboard_administrador.css') }}">
+</head>
+<body>
+
+    <!-- Cabeçalho para celular -->
+    <header class="cabecalho-mobile">
+        <img src="{{ url_for('static', filename='img/logobranca.png') }}"
+             alt="ATIVA Fitness">
+    </header>
+
+    <!-- Menu lateral -->
+    <aside class="menu-lateral">
+
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logobranca.png') }}"
+                 alt="ATIVA Fitness">
+        </div>
+
+        <nav>
+            <a href="{{ url_for('index') }}" class="ativo">Início</a>
+            <a href="{{ url_for('editar_perfil') }}">Perfil</a>
+            <a href="{{ url_for('grade_de_aulas') }}">Grade de Aulas</a>
+            <a href="#">Professores</a>
+            <a href="#">Alunos</a>
+            <a href="{{ url_for('logout') }}">Sair</a>
+        </nav>
+
+    </aside>
+
+    <!-- Conteúdo principal -->
+    <main class="conteudo">
+
+        <div class="painel">
+
+            <!-- Decoração superior direita -->
+            <div class="decoracao-superior" aria-hidden="true"></div>
+
+            <!-- Cabeçalho do painel -->
+            <header class="cabecalho">
+                <div class="usuario">
+                    <span>{{ nome }}</span>
+
+                    <div class="icone-usuario">
+                        <img
+                            src="{{ url_for('static', filename='img/img_perfil_nome.png') }}"
+                            alt="Usuário">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Boas-vindas -->
+            <section class="boas-vindas">
+                <h1>Olá, Administrador!</h1>
+                <p>Bem-Vindo ao painel administrativo da Ativa Fitness</p>
+            </section>
+
+            <!-- Indicadores -->
+            <section class="indicadores" aria-label="Resumo administrativo">
+
+                <article class="card-indicador">
+                    <div class="icone-indicador">
+                        <img
+                            src="{{ url_for('static', filename='img/icone-qtd-pessoas.png') }}"
+                            alt="">
+                    </div>
+
+                    <div class="informacao-indicador">
+                        <strong>100</strong>
+                        <span>Alunos</span>
+                    </div>
+                </article>
+
+                <article class="card-indicador">
+                    <div class="icone-indicador">
+                        <img
+                              src="{{ url_for('static', filename='img/icone-aulas.png') }}"
+                            alt="">
+                    </div>
+
+                    <div class="informacao-indicador">
+                        <strong>6</strong>
+                        <span>Aulas cadastradas</span>
+                    </div>
+                </article>
+
+                <article class="card-indicador">
+                    <div class="icone-indicador">
+                        <img
+                            src="{{ url_for('static', filename='img/icone-professores.png') }}"
+                            alt=professor"">
+                    </div>
+
+                    <div class="informacao-indicador">
+                        <strong>10</strong>
+                        <span>Professores</span>
+                    </div>
+                </article>
+
+            </section>
+
+            <!-- Acesso rápido -->
+            <section class="acesso-rapido">
+
+                <h2>Acesso rápido</h2>
+
+                <div class="botoes-rapidos">
+
+                    <a href="{{ url_for('grade_de_aulas') }}"
+                       class="botao-rapido botao-principal">
+                        + Nova aula
+                    </a>
+
+                    <a href="#"
+                       class="botao-rapido">
+                        + Novo professor
+                    </a>
+
+                    <a href="{{ url_for('grade_de_aulas') }}"
+                       class="botao-rapido">
+                        Ver grade de aulas
+                    </a>
+
+                    <a href="#"
+                       class="botao-rapido">
+                        + Novo aluno
+                    </a>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- Menu inferior para celular -->
+    <nav class="menu-inferior">
+
+        <a href="{{ url_for('index') }}" class="item-menu">
+            <img src="{{ url_for('static', filename='img/icone_home.png') }}"
+                 alt="">
+            <span>Início</span>
+        </a>
+
+        <a href="{{ url_for('editar_perfil') }}" class="item-menu">
+            <img src="{{ url_for('static', filename='img/icone_perfil.png') }}"
+                 alt="">
+            <span>Perfil</span>
+        </a>
+
+        <a href="{{ url_for('grade_de_aulas') }}" class="item-menu">
+            <img src="{{ url_for('static', filename='img/icone_grade.png') }}"
+                 alt="">
+            <span>Grade de Aulas</span>
+        </a>
+
+        <a href="{{ url_for('logout') }}" class="item-menu">
+            <img src="{{ url_for('static', filename='img/icone_sair.png') }}"
+                 alt="">
+            <span>Sair</span>
+        </a>
+
+    </nav>
+
+</body>
+</html>

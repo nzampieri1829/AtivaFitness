@@ -7,7 +7,7 @@
 
     <title>Meu Perfil - ATIVA Fitness</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style5.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/editar_perfil.css') }}">
 </head>
 <body>
 
@@ -21,7 +21,7 @@
         <nav>
             <a href="{{ url_for('index') }}">Início</a>
             <a href="{{ url_for('editar_perfil') }}" class="ativo">Perfil</a>
-            <a href="">Grade de Aulas</a>
+            <a href="{{ url_for('grade_de_aulas') }}">Grade de Aulas</a>
             <a href="">Professores</a>
             <a href="">Alunos</a>
             <a href="{{ url_for('logout') }}">Sair</a>
