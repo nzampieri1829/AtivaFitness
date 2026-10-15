@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Grade de Aulas - ATIVA Fitness</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/grade_de_aulas.css') }}">
+</head>
+<body>
+
+    <!-- Cabeçalho exibido no celular -->
+    <header class="cabecalho-mobile">
+        <img src="{{ url_for('static', filename='img/logobranca.png') }}"
+             alt="ATIVA Fitness">
+    </header>
+
+    <!-- Menu lateral -->
+    <aside class="menu-lateral">
+
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logobranca.png') }}"
+                 alt="ATIVA Fitness">
+        </div>
+
+        <nav>
+            <a href="{{ url_for('index') }}">Início</a>
+
+            <a href="{{ url_for('editar_perfil') }}">Perfil</a>
+
+            <a href="{{ url_for('grade_de_aulas') }}" class="ativo">
+                Grade de Aulas
+            </a>
+
+            <a href="#">Professores</a>
+
+            <a href="#">Alunos</a>
+
+            <a href="{{ url_for('logout') }}">Sair</a>
+        </nav>
+
+    </aside>
+
+    <!-- Conteúdo principal -->
+    <main class="conteudo">
+
+        <div class="painel">
+
+            <!-- Cabeçalho do painel -->
+            <header class="cabecalho">
+
+                <div class="usuario">
+                    <span>{{ nome }}</span>
+
+                    <div class="icone-usuario">
+                        <img
+                            src="{{ url_for('static', filename='img/img_perfil_nome.png') }}"
+                            alt="Usuário">
+                    </div>
+                </div>
+
+            </header>
+
+            <!-- Título -->
+            <section class="boas-vindas">
+                <h1>Grade de aulas</h1>
+                <p>Veja todas as aulas disponíveis</p>
+            </section>
+
+            <!-- Lista de atividades -->
+            <section class="atividades">
+
+                <article class="atividade1">
+                    <div class="icone">🧘</div>
+
+                    <div class="descricao">
+                        <h2>Yoga</h2>
+                        <p>Meditação e relaxamento</p>
+
+                        <div class="horario">
+                            <span class="relogio">◷</span>
+                            <p>Segunda-Feira 9:00<br>
+                               e Sexta-Feira 18:00</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="atividade2">
+                    <div class="icone">🚴</div>
+
+                    <div class="descricao">
+                        <h2>Spinning</h2>
+                        <p>Aula de ciclismo indoor</p>
+
+                        <div class="horario">
+                            <span class="relogio">◷</span>
+                            <p>Terça-Feira 14:00, Quarta-Feira<br>
+                               17:00 e Sexta-Feira 8:00</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="atividade3">
+                    <div class="icone">🏋️</div>
+
+                    <div class="descricao">
+                        <h2>Funcional</h2>
+                        <p>Treino dinâmico para melhorar<br>
+                           força e resistência.</p>
+
+                        <div class="horario">
+                            <span class="relogio">◷</span>
+                            <p>Quarta-Feira 10:00 e Quinta-<br>
+                               Feira 16:00</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="atividade4">
+                    <div class="icone">🥊</div>
+
+                    <div class="descricao">
+                        <h2>Muay Thai</h2>
+                        <p>Treino de luta para desenvolver força,<br>
+                           agilidade e resistência.</p>
+
+                        <div class="horario">
+                            <span class="relogio">◷</span>
+                            <p>Terça-Feira 19:00 e Quinta-<br>
+                               Feira 19:00</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="atividade5">
+                    <div class="icone">💃</div>
+
+                    <div class="descricao">
+                        <h2>Ritmos</h2>
+                        <p>Aula divertida para melhorar ritmo,<br>
+                           coordenação e condicionamento.</p>
+
+                        <div class="horario">
+                            <span class="relogio">◷</span>
+                            <p>Terça-Feira 9:00 e Quinta-<br>
+                               Feira 14:00</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="atividade6'''''">
+                    <div class="icone">🤸</div>
+
+                    <div class="descricao">
+                        <h2>Pilates</h2>
+                        <p>Exercícios para melhorar a postura,<br>
+                           flexibilidade e equilíbrio.</p>
+
+                        <div class="horario">
+                            <span class="relogio">◷</span>
+                            <p>Segunda-Feira 18:00, Quarta-<br>
+                               Feira 9:00 e Sexta-Feira 16:00</p>
+                        </div>
+                    </div>
+                </article>
+
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- Menu inferior para celular -->
+    <nav class="menu-inferior">
+
+        <a href="{{ url_for('index') }}" class="item-menu">
+            <img src="{{ url_for('static', filename='img/icone_home.png') }}"
+                 alt="">
+            <span>Início</span>
+        </a>
+
+        <a href="{{ url_for('editar_perfil') }}" class="item-menu">
+            <img src="{{ url_for('static', filename='img/icone_perfil.png') }}"
+                 alt="">
+            <span>Perfil</span>
+        </a>
+
+        <a href="{{ url_for('grade_de_aulas') }}"
+           class="item-menu selecionado">
+            <img src="{{ url_for('static', filename='img/icone_grade.png') }}"
+                 alt="">
+            <span>Grade de Aulas</span>
+        </a>
+
+        <a href="{{ url_for('logout') }}" class="item-menu">
+            <img src="{{ url_for('static', filename='img/icone_sair.png') }}"
+                 alt="">
+            <span>Sair</span>
+        </a>
+
+    </nav>
+
+</body>
+</html>

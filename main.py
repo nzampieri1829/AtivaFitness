@@ -1,21 +1,16 @@
-
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import fdb
 from flask_bcrypt import Bcrypt
 
 
-# CONFIGURACAO
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'chave_secreta_ativa_fitness'
-
 bcrypt = Bcrypt(app)
 
 
-# CONEXAO COM O BANCO DE DADOS
-
+# Conexão com o banco
 host = 'localhost'
-database = r'C:\Users\Aluno\Downloads\BANCO.FDB'
+database = r'C:\Users\Aluno\Downloads\BancoDados\TRABALHOATFIT.FDB'
 user = 'sysdba'
 password = 'sysdba'
 
@@ -27,14 +22,13 @@ con = fdb.connect(
 )
 
 
-# CODIGO DO PERFIL DE ALUNO
-# CONFIRME SE O NUMERO 1 E O CORRETO NO SEU BANCO.
+# Landing page
+@app.route('/')
+def home():
+    return render_template('landingpage.html')
 
-PERFIL_ALUNO = 1
 
-
-# VERIFICAR SE A SENHA E FORTE
-
+# Função senha forte
 def senha_forte(senha):
 
     if len(senha) < 8:
@@ -59,40 +53,125 @@ def senha_forte(senha):
         else:
             tem_especial = True
 
-    return (
-        tem_maiuscula
-        and tem_minuscula
-        and tem_numero
-        and tem_especial
-    )
+    return (tem_maiuscula and tem_minuscula and tem_numero and tem_especial)
 
 
-# PAGINA INICIAL
+# Cadastrar novo usuário
+@app.route('/novo_usuario', methods=['GET', 'POST'])
+def novo_usuario():
 
-@app.route('/')
-def home():
-    return render_template('home.html')
+    # Exibir formulário
+    if request.method == 'GET':
+        return render_template('novo_usuario.html')
+
+    # Receber dados do formulário
+    nome = request.form.get('nome', '').strip()
+    email = request.form.get('email', '').strip()
+    senha = request.form.get('senha', '')
+    confirmar_senha = request.form.get('confirmar_senha', '')
+
+    # Verificação campos preenchidos
+    if not nome or not email or not senha or not confirmar_senha:
+
+        flash('Preencha todos os campos.', 'erro')
+        return redirect(url_for('novo_usuario'))
+
+    # Verificação senhas iguais
+    if senha != confirmar_senha:
+
+        flash('As senhas não são iguais.', 'erro')
+        return redirect(url_for('novo_usuario'))
+
+    # Verificação senha forte
+    if not senha_forte(senha):
+
+        flash(
+            'A senha deve ter pelo menos 8 caracteres, '
+            'uma letra maiúscula, uma letra minúscula, '
+            'um número e um caractere especial.', 'erro'
+        )
+
+        return redirect(url_for('novo_usuario'))
+
+    cursor = con.cursor()
+
+    try:
+
+        # Verificação de e-mail já cadastrado
+        cursor.execute(
+            """
+            SELECT id_usuario FROM USUARIO WHERE email = ?
+            """,
+            (email,)
+        )
+
+        usuario_existente = cursor.fetchone()
+
+        if usuario_existente:
+
+            flash('Este e-mail já está cadastrado.', 'erro')
+            return redirect(url_for('novo_usuario'))
+
+        # Criptografar a senha
+        senha_hash = bcrypt.generate_password_hash(
+            senha
+        ).decode('utf-8')
+
+        # Cadastrar usuário
+        cursor.execute(
+            """
+            INSERT INTO USUARIO(nome, email, senha, tentativas, ativo)
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (nome, email, senha_hash, 0, 1)
+        )
+
+        # Salvar no banco
+        con.commit()
+
+        flash('Usuário cadastrado com sucesso!', 'sucesso')
+
+        return redirect(url_for('login'))
+
+    # Tratar erros
+    except Exception as e:
+
+        con.rollback()
+
+        flash(f'Erro ao cadastrar usuário: {e}', 'erro')
+
+        return redirect(url_for('novo_usuario'))
+
+    # Fechar o cursor
+    finally:
+        cursor.close()
 
 
-# LOGIN
-
+# Login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 
+    # Se o formulário foi enviado
     if request.method == 'POST':
 
+        # Pegar os dados enviados pelo formulário
         email = request.form.get('email')
         senha = request.form.get('senha')
 
+        # Verificar se os campos foram preenchidos
         if not email or not senha:
-            flash('Preencha o email e a senha.')
+
+            flash('Preencha o email e a senha.', 'erro')
+
             return redirect(url_for('login'))
 
         cursor = con.cursor()
 
         try:
 
-            cursor.execute("""
+            # Buscar usuário pelo e-mail
+            cursor.execute(
+                """
                 SELECT
                     id_usuario,
                     nome,
@@ -102,14 +181,19 @@ def login():
                     ativo
                 FROM USUARIO
                 WHERE email = ?
-            """, (email,))
+                """,
+                (email,)
+            )
 
             usuario = cursor.fetchone()
 
+            # Usuário não encontrado
             if not usuario:
-                flash('Email ou senha incorretos.')
+
+                flash('Email ou senha incorretos.', 'erro')
                 return redirect(url_for('login'))
 
+            # Organizar dados do usuário
             (
                 id_usuario,
                 nome,
@@ -119,68 +203,87 @@ def login():
                 ativo
             ) = usuario
 
+            # Caso tentativas esteja NULL no banco
             if tentativas is None:
                 tentativas = 0
 
-            #BLOQUEAR APOS 3 TENTATIVAS
+            # Verificar se o usuário está ativo
             if ativo == 0:
-                flash('Usuario inativo ou bloqueado.')
+
+                flash('Usuário inativo ou bloqueado.', 'erro')
                 return redirect(url_for('login'))
 
-            if usuario[6]>=3:
-                flash("Usuário bloqueado após 3 tentativas")
-
-                return redirect(url_for('login'))
-
-
-            # VERIFICAR SENHA
-
+            # Verificar senha
             if bcrypt.check_password_hash(senha_hash, senha):
 
+                # Guardar os dados na sessão
                 session['id_usuario'] = id_usuario
                 session['usuario_nome'] = nome
                 session['usuario_email'] = email_banco
 
-                cursor.execute("""
+                # Zerar as tentativas
+                cursor.execute(
+                    """
                     UPDATE USUARIO
                     SET tentativas = ?
                     WHERE id_usuario = ?
-                """, (0, id_usuario))
+                    """,
+                    (0, id_usuario)
+                )
 
                 con.commit()
 
-                flash('Login realizado com sucesso!')
+                flash('Login realizado com sucesso!', 'sucesso')
+
                 return redirect(url_for('index'))
 
-            else:
-                tentativas = usuario[6] + 1
+            # Senha incorreta
+            tentativas += 1
 
-                cursor.execute("""
-                             UPDATE USUARIO
-                             SET tentativas = ?, ativo = ?
-                             WHERE id_usuario = ?
-                                """, (tentativas, 0, id_usuario))
+            # Bloquear após 3 tentativas
+            if tentativas >= 3:
+
+                cursor.execute(
+                    """
+                    UPDATE USUARIO
+                    SET tentativas = ?, ativo = ?
+                    WHERE id_usuario = ?
+                    """,
+                    (tentativas, 0, id_usuario)
+                )
 
                 con.commit()
 
+                flash('Usuário bloqueado após 3 tentativas.', 'erro')
 
+                return redirect(url_for('login'))
 
-            # SENHA INCORRETA
+            # Atualizar tentativas
+            cursor.execute(
+                """
+                UPDATE USUARIO
+                SET tentativas = ?
+                WHERE id_usuario = ?
+                """,
+                (tentativas, id_usuario)
+            )
 
-            if tentativas >= 3:
-                flash('Usuario bloqueado apos 3 tentativas.')
+            con.commit()
 
-            else:
-                flash("Senha incorreta!")
+            flash(
+                f'Email ou senha incorretos. '
+                f'Tentativa {tentativas} de 3.', 'erro'
+            )
 
             return redirect(url_for('login'))
 
-        except Exception as erro:
+        # Erro no banco ou no login
+        except Exception as e:
 
             con.rollback()
-            print('Erro no login:', erro)
 
-            flash('Ocorreu um erro ao fazer login.')
+            flash(f'Ocorreu um erro no login: {e}', 'erro')
+
             return redirect(url_for('login'))
 
         finally:
@@ -189,132 +292,132 @@ def login():
     return render_template('login.html')
 
 
-# CADASTRO
-# AS DUAS ROTAS UTILIZAM A MESMA FUNCAO.
+# Início / Dashboard
+@app.route('/inicio')
+def index():
 
-@app.route(
-    '/novo_usuario',
-    methods=['GET', 'POST'],
-    endpoint='novo_usuario'
-)
-@app.route(
-    '/cadastro',
-    methods=['GET', 'POST'],
-    endpoint='cadastro'
-)
-def cadastrar_usuario():
+    # Verificar se o usuário está logado
+    if 'id_usuario' not in session:
+        return redirect(url_for('login'))
 
-    if request.method == 'GET':
-        return render_template('cadastro.html')
+    # Pegar o nome do usuário
+    nome = session['usuario_nome']
 
-    nome = request.form.get('nome')
-    email = request.form.get('email')
-    senha = request.form.get('senha')
+    return render_template('dashboard.html', nome=nome)
 
-    # VERIFICAR CAMPOS
 
-    if not nome or not email or not senha:
-        flash('Preencha todos os campos.')
-        return redirect(url_for('cadastro'))
+# Editar perfil
 
-    # VERIFICAR SENHA FORTE
+@app.route('/editar_perfil', methods=['GET', 'POST'])
+def editar_perfil():
+    if 'id_usuario' not in session:
+        return redirect(url_for('login'))
 
-    if not senha_forte(senha):
-        flash(
-            'A senha deve ter pelo menos 8 caracteres, '
-            'letra maiuscula, letra minuscula, numero '
-            'e caractere especial.'
-        )
-        return redirect(url_for('cadastro'))
-
+    id_usuario = session['id_usuario']
     cursor = con.cursor()
 
     try:
+        if request.method == 'POST':
+            nome = request.form['nome'].strip()
+            email = request.form['email'].strip()
+            senha = request.form.get('senha', '')
+            confirmar_senha = request.form.get('confirmar_senha', '')
 
-        # VERIFICAR EMAIL DUPLICADO
+            # Verificar se nome e email foram preenchidos
+            if not nome or not email:
+                flash('Preencha o nome e o e-mail.', 'erro')
+                return redirect(url_for('editar_perfil'))
 
-        cursor.execute("""
-            SELECT id_usuario
-            FROM USUARIO
-            WHERE email = ?
-        """, (email,))
+            # Verificar se as senhas são iguais
+            if senha != confirmar_senha:
+                flash('As senhas não são iguais.', 'erro')
+                return redirect(url_for('editar_perfil'))
 
-        usuario_existente = cursor.fetchone()
-
-        if usuario_existente:
-            flash('Este email ja esta cadastrado.')
-            return redirect(url_for('cadastro'))
-
-        # CRIPTOGRAFAR SENHA
-
-        senha_hash = bcrypt.generate_password_hash(
-            senha
-        ).decode('utf-8')
-
-        # CADASTRAR USUARIO
-
-        cursor.execute("""
-            INSERT INTO USUARIO
-            (
-                nome,
-                email,
-                senha,
-                tentativas,
-                ativo,
-                perfil
+            # Verificar se o email já pertence a outro usuário
+            cursor.execute(
+                'SELECT id_usuario FROM USUARIO WHERE email = ? AND id_usuario <> ?',
+                (email, id_usuario)
             )
-            VALUES (?, ?, ?, ?, ?, ?)
-        """, (
-            nome,
-            email,
-            senha_hash,
-            0,
-            1,
-            PERFIL_ALUNO
-        ))
 
-        con.commit()
+            if cursor.fetchone():
+                flash('Este e-mail já está cadastrado.', 'erro')
+                return redirect(url_for('editar_perfil'))
 
-        flash('Usuario cadastrado com sucesso!')
-        return redirect(url_for('login'))
+            # Atualizar os dados e criptografar a nova senha
+            if senha:
+                senha_hash = bcrypt.generate_password_hash(
+                    senha
+                ).decode('utf-8')
 
-    except Exception as erro:
+                cursor.execute(
+                    'UPDATE USUARIO SET nome = ?, email = ?, senha = ? WHERE id_usuario = ?',
+                    (nome, email, senha_hash, id_usuario)
+                )
 
+            else:
+                cursor.execute(
+                    'UPDATE USUARIO SET nome = ?, email = ? WHERE id_usuario = ?',
+                    (nome, email, id_usuario)
+                )
+
+            # Salvar as alterações no banco
+            con.commit()
+
+            # Atualizar os dados da sessão
+            session['usuario_nome'] = nome
+            session['usuario_email'] = email
+
+            flash('Perfil atualizado com sucesso!', 'sucesso')
+            return redirect(url_for('editar_perfil'))
+
+        # Buscar os dados atuais do usuário
+        cursor.execute(
+            'SELECT nome, email FROM USUARIO WHERE id_usuario = ?',
+            (id_usuario,)
+        )
+
+        usuario = cursor.fetchone()
+
+        if usuario is None:
+            session.clear()
+            return redirect(url_for('login'))
+
+        nome = usuario[0]
+        email = usuario[1]
+
+        return render_template(
+            'editar_perfil.html',
+            nome=nome,
+            email=email
+        )
+
+    except Exception:
         con.rollback()
-
-        print('Erro ao cadastrar usuario:', erro)
-
-        flash(f'Erro ao cadastrar usuario: {erro}')
-        return redirect(url_for('cadastro'))
+        flash('Não foi possível atualizar o perfil.', 'erro')
+        return redirect(url_for('editar_perfil'))
 
     finally:
         cursor.close()
 
 
-# PAGINA PRINCIPAL
 
-@app.route('/index')
-def index():
-
-    if 'id_usuario' not in session:
-        flash('Faca login para acessar esta pagina.')
-        return redirect(url_for('login'))
-
-    return render_template('index.html')
-
-
-# SAIR DA CONTA
-
+# Logout
 @app.route('/logout')
 def logout():
 
+    # Apagar os dados da sessão
     session.clear()
 
-    flash('Voce saiu da sua conta.')
+    flash('Você saiu da sua conta, com sucesso!', 'sucesso')
+
     return redirect(url_for('login'))
 
 
-# EXECUTAR APLICACAO
+#Grade de aulas
+@app.route('/grade_de_aulas', methods=['GET', 'POST'])
+def grade_de_aulas():
+    return render_template('grade_de_aulas.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
