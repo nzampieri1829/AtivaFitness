@@ -1,0 +1,815 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+
+:root {
+    --cinza-texto: #333333;
+    --cinza-secundario: #888888;
+    --branco: #FFFFFF;
+    --verde-principal: #18B83A;
+    --verde-escuro: #075B2A;
+    --verde-decoracao: #0cbd36;
+    --verde-claro: #E0F8E6;
+    --borda: #CCCCCC;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    overflow: hidden;
+    background-color: var(--branco);
+    color: var(--cinza-texto);
+    font-size: 14px;
+}
+
+/* MENU LATERAL */
+
+.menu-lateral {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    width: 210px;
+    height: 100vh;
+    padding: 15px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background: linear-gradient(
+        145deg,
+        #006332,
+        #004b25
+    );
+
+    overflow: hidden;
+}
+
+/* Decoração inferior esquerda */
+
+.menu-lateral::after {
+    content: "";
+    position: absolute;
+
+    width: 105px;
+    height: 210px;
+    left: -46px;
+    bottom: -45px;
+
+    background-color: var(--verde-decoracao);
+    border-radius: 12px;
+    transform: rotate(45deg);
+
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Logo */
+
+.logo {
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+    height: 86px;
+    margin-bottom: 17px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.logo img {
+    width: 100px;
+    height: 68px;
+    object-fit: contain;
+}
+
+/* Links */
+
+.menu-lateral nav {
+    position: relative;
+    z-index: 2;
+
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.menu-lateral nav a {
+    min-height: 36px;
+    padding: 8px 27px;
+
+    display: flex;
+    align-items: center;
+
+    color: var(--branco);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 400;
+
+    border: 1px solid rgba(0, 30, 15, 0.35);
+    border-radius: 9px;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.menu-lateral nav a:hover {
+    background-color: rgba(0, 190, 45, 0.35);
+}
+
+.menu-lateral nav a.ativo {
+    background-color: #0bb52e;
+    border-color: #0bb52e;
+    font-weight: 500;
+}
+
+/* CABEÇALHO MOBILE */
+
+.cabecalho-mobile {
+    display: none;
+}
+
+/* CONTEÚDO PRINCIPAL*/
+
+.conteudo {
+    flex: 1;
+    min-width: 0;
+    height: 100vh;
+    margin-left: 206px;
+    padding: 24px 17px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.painel {
+    position: relative;
+
+    width: 100%;
+    max-width: 1000px;
+    min-width: 0;
+    min-height: 0;
+
+    padding: 8px 16px 28px;
+
+    display: flex;
+    flex-direction: column;
+
+    background-color: var(--branco);
+    border: 1px solid #C5C5C5;
+    border-radius: 8px;
+
+    overflow: hidden;
+}
+
+/*DECORAÇÃO SUPERIOR */
+
+.decoracao-superior {
+    position: absolute;
+    top: 30px;
+    right: -61px;
+
+    width: 125px;
+    height: 42px;
+
+    background-color: var(--verde-principal);
+    border-radius: 10px;
+
+    transform: rotate(-46deg);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.decoracao-superior::before {
+    content: "";
+    position: absolute;
+
+    width: 125px;
+    height: 42px;
+    top: -32px;
+    left: -22px;
+
+    background-color: #00652D;
+    border-radius: 10px;
+}
+
+/* CABEÇALHO DO PAINEL*/
+
+.cabecalho {
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+    min-height: 34px;
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.usuario {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+
+    margin-left: auto;
+    margin-right: 14px;
+
+    color: #00672c;
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.usuario span {
+    font-size: 10px;
+}
+
+.icone-usuario {
+    width: 26px;
+    height: 26px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: 1.5px solid var(--verde-principal);
+    border-radius: 6px;
+    background-color: var(--branco);
+    overflow: hidden;
+}
+
+.icone-usuario img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+/* BOAS-VINDAS */
+
+.boas-vindas {
+    position: relative;
+    z-index: 1;
+
+    margin-top: 17px;
+    margin-bottom: 29px;
+    padding-left: 18px;
+}
+
+.boas-vindas h1 {
+    margin-bottom: 3px;
+
+    color: #393939;
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.boas-vindas p {
+    color: #999999;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+/* CARDS DE INDICADORES*/
+
+.indicadores {
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+    padding: 0 4px;
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 11px;
+
+    margin-bottom: 24px;
+}
+
+.card-indicador {
+    min-width: 0;
+    min-height: 70px;
+    padding: 7px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #F2F2F2;
+    border: 1px solid #C8C8C8;
+    border-radius: 6px;
+
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.14);
+}
+
+/* Ícone de cada indicador */
+
+.icone-indicador {
+    flex: 0 0 34px;
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--verde-claro);
+    border-radius: 6px;
+}
+
+.icone-indicador img {
+    width: 23px;
+    height: 23px;
+    object-fit: contain;
+}
+
+/* Número e legenda */
+
+.informacao-indicador {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.informacao-indicador strong {
+    color: #3D3D3D;
+    font-size: 21px;
+    font-weight: 500;
+    line-height: 1.1;
+}
+
+.informacao-indicador span {
+    color: #858585;
+    font-size: 13px;
+    font-weight: 400;
+    white-space: nowrap;
+}
+
+/*ACESSO RÁPIDO */
+
+.acesso-rapido {
+    position: relative;
+    z-index: 1;
+}
+
+.acesso-rapido h2 {
+    margin-bottom: 17px;
+
+    color: #00672c;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+/* Botões */
+
+.botoes-rapidos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 9px;
+}
+
+.botao-rapido {
+    min-height: 40px;
+    padding: 7px 80px;
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #00672c;
+    background-color: #F4F4F4;
+
+    border: 1px solid #80AD91;
+    border-radius: 6px;
+
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.botao-rapido:hover {
+    background-color: #E4F6E9;
+}
+
+.botao-rapido:active {
+    transform: scale(0.98);
+}
+
+/* Botão principal */
+
+.botao-rapido.botao-principal {
+    color: var(--branco);
+    background-color: #10B936;
+    border-color: #10B936;
+    font-weight: 700;
+
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.18);
+}
+
+.botao-rapido.botao-principal:hover {
+    background-color: #079A2A;
+}
+
+/* MENU INFERIOR */
+
+.menu-inferior {
+    display: none;
+}
+
+/*TABLETS*/
+
+@media (min-width: 769px) {
+    .painel {
+        padding-right: 17px;
+        padding-left: 16px;
+    }
+
+    .boas-vindas {
+        padding-left: 18px;
+    }
+}
+
+@media (max-width: 768px) and (min-width: 426px) {
+    .menu-lateral {
+        width: 180px;
+        padding-right: 12px;
+        padding-left: 12px;
+    }
+
+    .conteudo {
+        margin-left: 180px;
+        padding: 20px 12px;
+    }
+
+    .painel {
+        padding: 8px 14px 24px;
+    }
+
+    .boas-vindas {
+        padding-left: 6px;
+        margin-top: 18px;
+        margin-bottom: 24px;
+    }
+
+    .boas-vindas h1 {
+        font-size: 22px;
+    }
+
+    .boas-vindas p {
+        font-size: 12px;
+    }
+
+    .indicadores {
+        gap: 8px;
+        padding: 0;
+    }
+
+    .card-indicador {
+        padding: 7px;
+        gap: 6px;
+    }
+
+    .icone-indicador {
+        flex-basis: 29px;
+        width: 29px;
+        height: 29px;
+    }
+
+    .icone-indicador img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .informacao-indicador strong {
+        font-size: 19px;
+    }
+
+    .informacao-indicador span {
+        font-size: 13px;
+        white-space: normal;
+    }
+
+    .botoes-rapidos {
+        gap: 8px;
+    }
+
+    .botao-rapido {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+}
+
+/* CELULARES*/
+
+@media (max-width: 425px) {
+    body {
+        min-height: 100vh;
+        min-height: 100dvh;
+
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    /* Cabeçalho mobile */
+
+    .cabecalho-mobile {
+        position: relative;
+        z-index: 5;
+
+        width: 100%;
+        height: 52px;
+        min-height: 52px;
+        padding: 5px 18px;
+
+        display: flex;
+        align-items: center;
+
+        background: linear-gradient(
+            120deg,
+            var(--verde-escuro),
+            var(--verde-principal)
+        );
+    }
+
+    .cabecalho-mobile img {
+        width: 48px;
+        height: 42px;
+        object-fit: contain;
+    }
+
+    .menu-lateral {
+        display: none;
+    }
+
+    /* Conteúdo */
+
+    .conteudo {
+        flex: 1;
+        width: 100%;
+        min-height: 0;
+        height: auto;
+
+        margin-left: 0;
+        padding: 12px 9px;
+
+        display: block;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .painel {
+        width: 100%;
+        min-height: 100%;
+        height: auto;
+
+        padding: 10px 12px 24px;
+
+        border: 1px solid #C5C5C5;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    /* Decoração */
+
+    .decoracao-superior {
+        top: 18px;
+        right: -77px;
+        transform: rotate(-46deg) scale(0.8);
+    }
+
+    /* Usuário */
+
+    .cabecalho {
+        min-height: 29px;
+    }
+
+    .usuario {
+        margin-right: 3px;
+    }
+
+    .usuario span {
+        font-size: 10px;
+    }
+
+    .icone-usuario {
+        width: 25px;
+        height: 25px;
+    }
+
+    /* Boas-vindas */
+
+    .boas-vindas {
+        margin-top: 17px;
+        margin-bottom: 22px;
+        padding-left: 0;
+    }
+
+    .boas-vindas h1 {
+        font-size: 21px;
+    }
+
+    .boas-vindas p {
+        max-width: 95%;
+        font-size: 12px;
+    }
+
+    /* Indicadores */
+
+    .indicadores {
+        grid-template-columns: 1fr;
+        gap: 10px;
+
+        padding: 0;
+        margin-bottom: 25px;
+    }
+
+    .card-indicador {
+        min-height: 65px;
+        padding: 9px 12px;
+        gap: 12px;
+    }
+
+    .icone-indicador {
+        flex-basis: 38px;
+        width: 38px;
+        height: 38px;
+    }
+
+    .icone-indicador img {
+        width: 25px;
+        height: 25px;
+    }
+
+    .informacao-indicador strong {
+        font-size: 21px;
+    }
+
+    .informacao-indicador span {
+        font-size: 11px;
+    }
+
+    /* Acesso rápido */
+
+    .acesso-rapido h2 {
+        margin-bottom: 13px;
+        font-size: 14px;
+    }
+
+    .botoes-rapidos {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 9px;
+    }
+
+    .botao-rapido {
+        width: 100%;
+        min-height: 39px;
+        padding: 9px 10px;
+        font-size: 13px;
+        white-space: normal;
+        text-align: center;
+    }
+
+    /* Menu inferior */
+
+    .menu-inferior {
+        position: relative;
+        z-index: 5;
+
+        width: 100%;
+        height: 57px;
+        min-height: 57px;
+        padding: 3px 5px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+
+        background-color: var(--verde-principal);
+    }
+
+    .item-menu {
+        flex: 1;
+        min-width: 0;
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+
+        color: var(--branco);
+        text-decoration: none;
+        font-size: 9px;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .item-menu img {
+        width: 25px;
+        height: 25px;
+        object-fit: contain;
+        display: block;
+    }
+}
+
+/* Celulares pequenos */
+
+@media (max-width: 375px) {
+    .boas-vindas h1 {
+        font-size: 19px;
+    }
+
+    .boas-vindas p {
+        font-size: 11px;
+    }
+
+    .card-indicador {
+        min-height: 60px;
+    }
+
+    .item-menu {
+        font-size: 8px;
+    }
+}
+
+@media (max-width: 320px) {
+    .cabecalho-mobile {
+        height: 48px;
+        min-height: 48px;
+        padding-left: 13px;
+    }
+
+    .cabecalho-mobile img {
+        width: 43px;
+        height: 38px;
+    }
+
+    .conteudo {
+        padding: 10px 7px;
+    }
+
+    .painel {
+        padding: 9px 8px 16px;
+    }
+
+    .boas-vindas h1 {
+        font-size: 17px;
+    }
+
+    .boas-vindas p {
+        font-size: 10px;
+    }
+
+    .indicadores {
+        gap: 7px;
+    }
+
+    .card-indicador {
+        padding: 7px;
+    }
+
+    .informacao-indicador strong {
+        font-size: 19px;
+    }
+
+    .menu-inferior {
+        height: 49px;
+        min-height: 49px;
+    }
+
+    .item-menu {
+        font-size: 7px;
+    }
+
+    .item-menu img {
+        width: 22px;
+        height: 22px;
+    }
+}
