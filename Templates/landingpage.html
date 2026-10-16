@@ -12,9 +12,7 @@
             {% with mensagens = get_flashed_messages(with_categories=true) %}
                 {% if mensagens %}
                     {% for categoria, mensagem in mensagens %}
-                        <div class="mensagem {{ categoria }}">
-                            {{ mensagem }}
-                        </div>
+
                     {% endfor %}
                 {% endif %}
             {% endwith %}

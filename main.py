@@ -71,10 +71,10 @@ def novo_usuario():
     if request.method == 'GET':
         return render_template('novo_usuario.html')
 
-    nome = request.form.get('nome', '').strip()
-    email = request.form.get('email', '').strip()
-    senha = request.form.get('senha', '')
-    confirmar_senha = request.form.get('confirmar_senha', '')
+    nome = request.form('nome', '').strip()
+    email = request.form('email', '').strip()
+    senha = request.form('senha', '')
+    confirmar_senha = request.form('confirmar_senha', '')
 
 
     # verificar campos preenchidos
@@ -155,8 +155,8 @@ def login():
     if request.method == 'POST':
 
         # Receber os dados do formulario
-        email = request.form.get('email', '').strip()
-        senha = request.form.get('senha', '')
+        email = request.form('email', '').strip()
+        senha = request.form('senha', '')
 
         # Verificar se os campos foram preenchidos
         if not email or not senha:
@@ -400,12 +400,10 @@ def editar_perfil():
 
         if request.method == 'POST':
 
-            nome = request.form.get('nome', '').strip()
-            email = request.form.get('email', '').strip()
-            senha = request.form.get('senha', '')
-            confirmar_senha = request.form.get(
-                'confirmar_senha', ''
-            )
+            nome = request.form('nome').strip()
+            email = request.form('email').strip()
+            senha = request.form('senha')
+            confirmar_senha = request.form('confirmar_senha')
 
             # Verificar nome e email
             if not nome or not email:
@@ -505,7 +503,6 @@ def editar_perfil():
 
     except Exception as e:
         con.rollback()
-        print('Erro ao editar perfil:', e)
         flash('Nao foi possivel atualizar o perfil.', 'erro')
         return redirect(url_for('editar_perfil'))
 

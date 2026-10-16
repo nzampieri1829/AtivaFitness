@@ -1,0 +1,539 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --verde: #0bb52e;
+    --verde-escuro: #00552b;
+    --verde-fundo: #004b25;
+    --cinza-fundo: #f1f1f1;
+    --cinza-borda: #d2d2d2;
+    --cinza-texto: #929292;
+    --preto: #383838;
+    --branco: #ffffff;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--branco);
+    color: var(--preto);
+}
+
+/* MENU LATERAL */
+
+.menu-lateral {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 190px;
+    height: 100vh;
+    padding: 15px;
+    background: linear-gradient(145deg, #006332, #004b25);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.menu-lateral::after {
+    content: "";
+    position: absolute;
+    width: 105px;
+    height: 210px;
+    left: -46px;
+    bottom: 65px;
+    background: #0cbd36;
+    border-radius: 12px;
+    transform: rotate(45deg);
+    opacity: 0.9;
+    pointer-events: none;
+}
+
+.logo {
+    width: 100%;
+    height: 83px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+}
+
+.logo img {
+    width: 100px;
+    height: 65px;
+    object-fit: contain;
+}
+
+.menu-lateral nav {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    position: relative;
+    z-index: 2;
+}
+
+.menu-lateral nav a {
+    min-height: 35px;
+    padding: 9px 24px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--branco);
+    font-size: 13px;
+    border: 1px solid rgba(0, 30, 15, 0.35);
+    border-radius: 9px;
+    transition: background 0.2s;
+}
+
+.menu-lateral nav a:hover {
+    background: rgba(0, 190, 45, 0.35);
+}
+
+.menu-lateral nav a.ativo {
+    background: var(--verde);
+    border-color: var(--verde);
+    font-weight: bold;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.16);
+}
+
+/* CABEÇALHO MOBILE */
+
+.cabecalho-mobile {
+    display: none;
+}
+
+/* CONTEÚDO PRINCIPAL */
+
+.conteudo {
+    min-height: 100vh;
+    margin-left: 190px;
+    padding: 23px 21px 20px 18px;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+}
+
+/* CARTÃO PRINCIPAL */
+
+.cartao-aula {
+    position: relative;
+    width: 100%;
+    max-width: 850px;
+    min-height: calc(100vh - 43px);
+    padding: 54px 25px 30px;
+    border: 1.5px solid #888;
+    border-radius: 8px;
+    background: var(--branco);
+}
+
+/* USUÁRIO NO CANTO SUPERIOR */
+
+.usuario {
+    position: absolute;
+    top: 8px;
+    right: 28px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--verde-escuro);
+    font-size: 11px;
+}
+
+.icone-usuario {
+    position: relative;
+    width: 25px;
+    height: 25px;
+    border: 2px solid var(--verde);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icone-usuario::before {
+    content: "";
+    position: absolute;
+    top: 3px;
+    width: 6px;
+    height: 6px;
+    border: 1.5px solid #111;
+    border-radius: 50%;
+}
+
+.icone-usuario span {
+    position: absolute;
+    bottom: 3px;
+    width: 12px;
+    height: 7px;
+    border: 1.5px solid #111;
+    border-radius: 7px 7px 3px 3px;
+}
+
+/* TÍTULO */
+
+.titulo-pagina {
+    margin: 0 8px 19px;
+}
+
+.titulo-pagina h1 {
+    margin-bottom: 3px;
+    font-size: 22px;
+    line-height: 1.3;
+    font-weight: 700;
+    color: #393939;
+}
+
+.titulo-pagina p {
+    color: #999;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* FORMULÁRIO */
+
+.cartao-aula form {
+    width: 100%;
+    padding: 0 5px;
+}
+
+.campo {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+.campo label {
+    margin: 0 0 4px 2px;
+    color: var(--preto);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    padding: 10px 14px;
+    border: 1px solid var(--cinza-borda);
+    border-radius: 9px;
+    outline: none;
+    background-color: var(--cinza-fundo);
+    color: var(--preto);
+    font-family: inherit;
+    font-size: 13px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.campo input::placeholder,
+.campo textarea::placeholder {
+    color: var(--cinza-texto);
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+    border-color: var(--verde);
+    box-shadow: 0 0 0 2px rgba(8, 181, 45, 0.12);
+}
+
+/* DESCRIÇÃO */
+
+.campo-descricao {
+    margin-bottom: 16px;
+}
+
+.campo textarea {
+    min-height: 101px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+/* DIA, HORÁRIO E CAPACIDADE */
+
+.linha-campos {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr 0.95fr;
+    gap: 15px;
+    margin: 0 0 15px;
+}
+
+.linha-campos .campo {
+    margin-bottom: 0;
+}
+
+.linha-campos .campo label {
+    white-space: nowrap;
+}
+
+.linha-campos input,
+.linha-campos select {
+    padding: 10px;
+}
+
+/* PROFESSOR */
+
+.campo-professor {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* BOTÃO */
+
+.cartao-aula button {
+    display: block;
+    width: 53%;
+    min-height: 31px;
+    margin: 56px auto 0;
+    padding: 4px 15px;
+    border: none;
+    border-radius: 6px;
+    background: var(--verde);
+    color: var(--branco);
+    font-family: inherit;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+    transition: background 0.2s, transform 0.2s;
+}
+
+.cartao-aula button:hover {
+    background: var(--verde-escuro);
+}
+
+.cartao-aula button:active {
+    transform: translateY(1px);
+}
+
+.cartao-aula button:focus-visible {
+    outline: 2px solid var(--verde-escuro);
+    outline-offset: 3px;
+}
+
+/* MENSAGENS DO FLASK */
+
+.mensagem {
+    margin: 0 5px 14px;
+    padding: 10px 12px;
+    border-radius: 7px;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.mensagem.sucesso {
+    color: var(--verde-escuro);
+    background: #e0f8df;
+    border: 1px solid #65d878;
+}
+
+.mensagem.erro {
+    color: #b00020;
+    background: #fff0f0;
+    border: 1px solid #e9aaaa;
+}
+
+/* MENU INFERIOR */
+
+.menu-inferior {
+    display: none;
+}
+
+/* TELAS MÉDIAS */
+
+@media (min-width: 1000px) {
+    .conteudo {
+        padding-left: 18px;
+        padding-right: 21px;
+    }
+
+    .cartao-aula {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+}
+
+/* CELULAR E TABLET PEQUENO */
+
+@media (max-width: 700px) {
+
+    body {
+        padding-bottom: 72px;
+    }
+
+    .menu-lateral {
+        display: none;
+    }
+
+    .cabecalho-mobile {
+        width: 100%;
+        height: 66px;
+        padding: 5px 20px;
+        background: linear-gradient(145deg, #006332, #004b25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cabecalho-mobile img {
+        width: 85px;
+        height: 55px;
+        object-fit: contain;
+    }
+
+    .conteudo {
+        min-height: auto;
+        margin-left: 0;
+        padding: 18px 12px;
+        display: block;
+    }
+
+    .cartao-aula {
+        width: 100%;
+        max-width: none;
+        min-height: auto;
+        padding: 55px 15px 25px;
+        border: 1px solid #888;
+        border-radius: 8px;
+    }
+
+    .titulo-pagina {
+        margin: 0 3px 22px;
+    }
+
+    .titulo-pagina h1 {
+        font-size: 22px;
+    }
+
+    .titulo-pagina p {
+        font-size: 12px;
+    }
+
+    .cartao-aula form {
+        padding: 0;
+    }
+
+    .campo {
+        margin-bottom: 17px;
+    }
+
+    .campo label {
+        font-size: 12px;
+    }
+
+    .campo input,
+    .campo select,
+    .campo textarea {
+        min-height: 40px;
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    .campo textarea {
+        min-height: 100px;
+    }
+
+    .linha-campos {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin-bottom: 17px;
+    }
+
+    .linha-campos .campo label {
+        white-space: normal;
+    }
+
+    .cartao-aula button {
+        width: 85%;
+        max-width: 300px;
+        min-height: 40px;
+        margin: 30px auto 0;
+        font-size: 16px;
+    }
+
+    .usuario {
+        right: 15px;
+        top: 12px;
+    }
+
+    .mensagem {
+        font-size: 12px;
+    }
+
+    /* MENU FIXO INFERIOR */
+
+    .menu-inferior {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        min-height: 65px;
+        padding: 7px 5px;
+        background: var(--branco);
+        border-top: 1px solid #e5e5e5;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 20;
+    }
+
+    .item-menu {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        color: #555;
+        text-decoration: none;
+        font-size: 10px;
+    }
+
+    .simbolo-menu {
+        font-size: 22px;
+        line-height: 22px;
+    }
+
+    .item-menu.ativo {
+        color: var(--verde);
+        font-weight: bold;
+    }
+}
+
+/* CELULARES PEQUENOS */
+
+@media (max-width: 360px) {
+
+    .conteudo {
+        padding: 12px 8px;
+    }
+
+    .cartao-aula {
+        padding: 50px 11px 22px;
+    }
+
+    .titulo-pagina h1 {
+        font-size: 20px;
+    }
+
+    .cartao-aula button {
+        width: 95%;
+        font-size: 14px;
+    }
+
+    .item-menu {
+        font-size: 9px;
+    }
+}

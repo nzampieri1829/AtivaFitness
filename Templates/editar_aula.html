@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Editar Aula - ATIVA Fitness</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/editar_aula.css') }}">
+</head>
+<body>
+
+    <!-- MENU LATERAL -->
+    <aside class="menu-lateral">
+
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logobranca.png') }}"
+                 alt="ATIVA Fitness">
+        </div>
+
+        <nav>
+            <a href="{{ url_for('index') }}">Início</a>
+            <a href="{{ url_for('editar_perfil') }}">Perfil</a>
+            <a href="{{ url_for('grade_de_aulas') }}" class="ativo">
+                Grade de Aulas
+            </a>
+            <a href="#">Professores</a>
+            <a href="#">Alunos</a>
+            <a href="{{ url_for('logout') }}">Sair</a>
+        </nav>
+
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="conteudo">
+
+        <!-- CABEÇALHO PARA CELULAR -->
+        <header class="cabecalho-mobile">
+            <img src="{{ url_for('static', filename='img/logobranca.png') }}"
+                 alt="ATIVA Fitness">
+        </header>
+
+        <section class="cartao-aula">
+
+            <!-- IDENTIFICAÇÃO DO USUÁRIO -->
+            <div class="usuario">
+                <span>{{ session.get('usuario_nome', 'Usuário') }}</span>
+                <div class="icone-usuario" aria-label="Usuário">
+                    <span></span>
+                </div>
+            </div>
+
+            <div class="titulo-pagina">
+                <h1>Editar aula</h1>
+                <p>Preencha as informações para editar uma nova aula</p>
+            </div>
+
+            <!-- MENSAGENS DO FLASK -->
+            {% with mensagens = get_flashed_messages(with_categories=true) %}
+                {% if mensagens %}
+                    {% for categoria, mensagem in mensagens %}
+                        <div class="mensagem {{ categoria }}">
+                            {{ mensagem }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- FORMULÁRIO -->
+            <form action="{{ url_for('editar_aula', id_aula=id_aula) }}"
+                  method="POST">
+
+                <div class="campo campo-nome">
+                    <label for="nome_aula">Nome da aula</label>
+
+                    <input
+                        type="text"
+                        id="nome_aula"
+                        name="nome_aula"
+                        placeholder="Nome da aula"
+                        value="{{ aula.nome_aula if aula else '' }}"
+                        required
+                    >
+                </div>
+
+                <div class="campo campo-descricao">
+                    <label for="descricao">Descrição</label>
+
+                    <textarea
+                        id="descricao"
+                        name="descricao"
+                        placeholder="Descrição da aula"
+                        required
+                    >{{ aula.descricao if aula else '' }}</textarea>
+                </div>
+
+                <div class="linha-campos">
+
+                    <div class="campo">
+                        <label for="dia_semana">Dia da semana</label>
+
+                        <select id="dia_semana"
+                                name="dia_semana"
+                                required>
+                            <option value="">Selecione o dia</option>
+
+                            {% for dia in [
+                                'Segunda-Feira',
+                                'Terça-Feira',
+                                'Quarta-Feira',
+                                'Quinta-Feira',
+                                'Sexta-Feira',
+                                'Sábado',
+                                'Domingo'
+                            ] %}
+                                <option value="{{ dia }}"
+                                    {% if aula and aula.dia_semana == dia %}
+                                        selected
+                                    {% endif %}>
+                                    {{ dia }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="horario">Horário da aula</label>
+
+                        <input
+                            type="time"
+                            id="horario"
+                            name="horario"
+                            value="{{ aula.horario if aula else '' }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="capacidade">Capacidade</label>
+
+                        <input
+                            type="number"
+                            id="capacidade"
+                            name="capacidade"
+                            placeholder="Ex: 10"
+                            min="1"
+                            value="{{ aula.capacidade if aula else '' }}"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+                <div class="campo campo-professor">
+                    <label for="professor">Selecionar professor responsável</label>
+
+                    <input
+                        type="text"
+                        id="professor"
+                        name="professor"
+                        placeholder="Nome do professor"
+                        value="{{ aula.professor if aula else '' }}"
+                        required
+                    >
+                </div>
+
+                <button type="submit">EDITAR AULA</button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <!-- MENU INFERIOR PARA CELULAR -->
+    <nav class="menu-inferior">
+
+        <a href="{{ url_for('index') }}" class="item-menu">
+            <span class="simbolo-menu">⌂</span>
+            <span>Início</span>
+        </a>
+
+        <a href="{{ url_for('grade_de_aulas') }}" class="item-menu ativo">
+            <span class="simbolo-menu">▦</span>
+            <span>Aulas</span>
+        </a>
+
+        <a href="{{ url_for('editar_perfil') }}" class="item-menu">
+            <span class="simbolo-menu">♙</span>
+            <span>Perfil</span>
+        </a>
+
+        <a href="{{ url_for('logout') }}" class="item-menu">
+            <span class="simbolo-menu">⇥</span>
+            <span>Sair</span>
+        </a>
+
+    </nav>
+
+</body>
+</html>
