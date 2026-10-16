@@ -12,6 +12,14 @@
 </head>
 <body>
 
+ <!-- MENSAGENS -->
+            {% with mensagens = get_flashed_messages(with_categories=true) %}
+                {% if mensagens %}
+                    {% for categoria, mensagem in mensagens %}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
     <!-- Cabeçalho para celular -->
     <header class="cabecalho-mobile">
         <img src="{{ url_for('static', filename='img/logobranca.png') }}"
@@ -31,11 +39,9 @@
 
             <a href="{{ url_for('editar_perfil') }}">Perfil</a>
 
-            <a href="{{ url_for('grade_de_aulas') }}">Grade de Aulas</a>
+            <a href="#">Agendamentos</a>
 
-            <a href="#">Professores</a>
-
-            <a href="#">Alunos</a>
+            <a href="{{ url_for('grade_de_aulas') }}">Grade de aulas</a>
 
             <a href="{{ url_for('logout') }}">Sair</a>
         </nav>

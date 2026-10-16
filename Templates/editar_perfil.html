@@ -20,10 +20,13 @@
 
         <nav>
             <a href="{{ url_for('index') }}">Início</a>
+
             <a href="{{ url_for('editar_perfil') }}" class="ativo">Perfil</a>
-            <a href="{{ url_for('grade_de_aulas') }}">Grade de Aulas</a>
-            <a href="">Professores</a>
-            <a href="">Alunos</a>
+
+            <a href="#">Agendamentos</a>
+
+            <a href="{{ url_for('grade_de_aulas') }}">Grade de aulas</a>
+
             <a href="{{ url_for('logout') }}">Sair</a>
         </nav>
 
