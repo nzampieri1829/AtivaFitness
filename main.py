@@ -512,7 +512,7 @@ def logout():
 
 
 # Grade de aulas
-@app.route('/grade_de_aulas')
+@app.route('/grade_de_aulas', methods=['GET', 'POST'])
 def grade_de_aulas():
 
     if 'id_usuario' not in session:

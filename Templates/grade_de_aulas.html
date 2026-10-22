@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,18 +11,19 @@
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/grade_de_aulas.css') }}">
 </head>
+
 <body>
 
- <!-- MENSAGENS -->
-            {% with mensagens = get_flashed_messages(with_categories=true) %}
-                {% if mensagens %}
-                    {% for categoria, mensagem in mensagens %}
-                        <div class="mensagem {{ categoria }}">
-                            {{ mensagem }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
+    <!-- MENSAGENS -->
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
+        {% if mensagens %}
+            {% for categoria, mensagem in mensagens %}
+                <div class="mensagem {{ categoria }}">
+                    {{ mensagem }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
     <!-- Cabeçalho exibido no celular -->
     <header class="cabecalho-mobile">
@@ -30,23 +32,23 @@
     </header>
 
     <!-- Menu lateral -->
-<aside class="menu-lateral">
+    <aside class="menu-lateral">
 
-    <div class="logo">
-        <img src="{{ url_for('static', filename='img/logobranca.png') }}"
-             alt="ATIVA Fitness">
-    </div>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logobranca.png') }}"
+                 alt="ATIVA Fitness">
+        </div>
 
-    <nav>
-        <a href="{{ url_for('index') }}">Início</a>
-        <a href="{{ url_for('editar_perfil') }}">Perfil</a>
-        <a href="{{ url_for('grade_de_aulas') }}" class="ativo">Grade de Aulas</a>
-        <a href="#">Professores</a>
-        <a href="#">Alunos</a>
-        <a href="{{ url_for('logout') }}">Sair</a>
-    </nav>
+        <nav>
+            <a href="{{ url_for('index') }}">Início</a>
+            <a href="{{ url_for('editar_perfil') }}">Perfil</a>
+            <a href="{{ url_for('grade_de_aulas') }}" class="ativo">Grade de Aulas</a>
+            <a href="#">Professores</a>
+            <a href="#">Alunos</a>
+            <a href="{{ url_for('logout') }}">Sair</a>
+        </nav>
 
-</aside>
+    </aside>
 
     <!-- Conteúdo principal -->
     <main class="conteudo">
@@ -74,120 +76,50 @@
                 <p>Veja todas as aulas disponíveis</p>
             </section>
 
-            <!-- Lista de atividades -->
+            <!-- Aulas cadastradas no banco -->
             <section class="atividades">
 
-                <article class="atividade1">
-                    <div class="icone">
-                        <img src="{{ url_for('static', filename='img/logo-ioga.png') }}" alt="yoga">
-                    </div>
+                {% for aula in aulas %}
 
+                    <article class="atividade1">
 
-                    <div class="descricao">
-                        <h2>Yoga</h2>
-                        <p>Meditação e relaxamento</p>
-
-                        <div class="horario">
-                            <span class="relogio">◷</span>
-                            <p>Segunda-Feira 9:00<br>
-                               e Sexta-Feira 18:00</p>
+                        <div class="icone">
+                            <img
+                                src="{{ url_for('static', filename='img/logo-ioga.png') }}"
+                                alt="Aula">
                         </div>
-                    </div>
-                </article>
-                
 
-                <article class="atividade2">
-                    <div class="icone">
-                        <img src="{{ url_for('static', filename='img/logo-spinning.png') }}" alt="spinning">
-                    </div>
+                        <div class="descricao">
 
-                    <div class="descricao">
-                        <h2>Spinning</h2>
-                        <p>Aula de ciclismo indoor</p>
+                            <h2>{{ aula[1] }}</h2>
 
-                        <div class="horario">
-                            <span class="relogio">◷</span>
-                            <p>Terça-Feira 14:00, Quarta-Feira<br>
-                               17:00 e Sexta-Feira 8:00</p>
+                            <p>{{ aula[2] }}</p>
+
+                            <div class="horario">
+                                <span class="relogio">◷</span>
+
+                                <p>
+                                    {{ aula[3] }} às {{ aula[4] }}
+                                </p>
+                            </div>
+
+                            <p>
+                                Capacidade: {{ aula[5] }} pessoas
+                            </p>
+
+                            <p>
+                                Professor: {{ aula[6] }}
+                            </p>
+
                         </div>
-                    </div>
-                </article>
 
-                <article class="atividade3">
-                    <div class="icone">️
-                        <img src="{{ url_for('static', filename='img/logo-funcional.png') }}" alt="funcional">
-                    </div>
+                    </article>
 
-                    <div class="descricao">
-                        <h2>Funcional</h2>
-                        <p>Treino dinâmico para melhorar<br>
-                           força e resistência.</p>
+                {% else %}
 
-                        <div class="horario">
-                            <span class="relogio">◷</span>
-                            <p>Quarta-Feira 10:00 e Quinta-<br>
-                               Feira 16:00</p>
-                        </div>
-                    </div>
-                </article>
+                    <p>Nenhuma aula cadastrada ainda.</p>
 
-                <article class="atividade4">
-                    <div class="icone">
-                        <img src="{{ url_for('static', filename='img/logo-muaithay.png') }}" alt="muaythai">
-                    </div>
-
-                    <div class="descricao">
-                        <h2>Muay Thai</h2>
-                        <p>Treino de luta para desenvolver força,<br>
-                           agilidade e resistência.</p>
-
-                        <div class="horario">
-                            <span class="relogio">◷</span>
-                            <p>Terça-Feira 19:00 e Quinta-<br>
-                               Feira 19:00</p>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="atividade5">
-                    <div class="icone">
-                        <img src="{{ url_for('static', filename='img/logo-ritmos.png') }}" alt="ritmos">
-
-                    </div>
-
-                    <div class="descricao">
-                        <h2>Ritmos</h2>
-                        <p>Aula divertida para melhorar ritmo,<br>
-                           coordenação e condicionamento.</p>
-
-                        <div class="horario">
-                            <span class="relogio">◷</span>
-                            <p>Terça-Feira 9:00 e Quinta-<br>
-                               Feira 14:00</p>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="atividade6">
-                    <div class="icone">
-                        <img src="{{ url_for('static', filename='img/logo-pilates.png') }}" alt="pilates">
-
-                    </div>
-
-
-
-                    <div class="descricao">
-                        <h2>Pilates</h2>
-                        <p>Exercícios para melhorar a postura,<br>
-                           flexibilidade e equilíbrio.</p>
-
-                        <div class="horario">
-                            <span class="relogio">◷</span>
-                            <p>Segunda-Feira 18:00, Quarta-<br>
-                               Feira 9:00 e Sexta-Feira 16:00</p>
-                        </div>
-                    </div>
-                </article>
+                {% endfor %}
 
             </section>
 
