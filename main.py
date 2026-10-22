@@ -521,7 +521,9 @@ def grade_de_aulas():
     cursor = con.cursor()
 
     try:
-        cursor.execute("SELECT * FROM AULA ORDER BY DIA, HORARIO")
+        cursor.execute("""SELECT id_aula, horario, capacidade, id_modalidade, id_usuario
+                       FROM AULA 
+                       ORDER BY DIA, HORARIO""")
         aulas = cursor.fetchall()
 
         return render_template(
