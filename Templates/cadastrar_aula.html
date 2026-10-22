@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar aula | Ativa Fitness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cadastrar_aula.css') }}">
+</head>
+<body>
+
+
+<!-- Menu lateral -->
+<aside class="menu-lateral">
+
+    <div class="logo">
+        <img src="{{ url_for('static', filename='img/logobranca.png') }}"
+             alt="ATIVA Fitness">
+    </div>
+
+    <nav>
+        <a href="{{ url_for('index') }}">Início</a>
+        <a href="{{ url_for('editar_perfil') }}">Perfil</a>
+        <a href="{{ url_for('grade_de_aulas') }}">Grade de Aulas</a>
+        <a href="#">Professores</a>
+        <a href="#">Alunos</a>
+        <a href="{{ url_for('logout') }}">Sair</a>
+    </nav>
+
+</aside>
+
+        <main class="conteudo">
+            <section class="cartao">
+
+                <div class="usuario">
+                    <span class="nome-usuario">Renata Tor</span>
+                    <span class="icone-usuario">
+                    </span>
+                </div>
+
+                <header class="cabecalho">
+                    <h1>Cadastrar aula</h1>
+                    <p>Preencha as informações para cadastrar uma nova aula</p>
+                </header>
+
+                {% with mensagens = get_flashed_messages(with_categories=true) %}
+                    {% if mensagens %}
+                        <div class="mensagens">
+                            {% for categoria, mensagem in mensagens %}
+                                <p class="mensagem {{ categoria }}">{{ mensagem }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+
+                <form class="formulario" action="{{ url_for('cadastrar_aula') }}" method="post">
+
+                    <div class="campo">
+                        <label for="nome">Nome da aula</label>
+                        <input
+                            type="text"
+                            id="nome"
+                            name="nome"
+                            placeholder="Nome da aula"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="descricao">Descrição</label>
+                        <textarea
+                            id="descricao"
+                            name="descricao"
+                            placeholder="Descrição da aula"
+                        ></textarea>
+                    </div>
+
+                    <div class="linha">
+
+                        <div class="campo">
+                            <label>Dia da semana</label>
+
+                            <div class="dias-semana">
+                                <label><input type="checkbox" name="dia[]" value="segunda"> Segunda-feira</label>
+                                <label><input type="checkbox" name="dia[]" value="terca"> Terça-feira</label>
+                                <label><input type="checkbox" name="dia[]" value="quarta"> Quarta-feira</label>
+                                <label><input type="checkbox" name="dia[]" value="quinta"> Quinta-feira</label>
+                                <label><input type="checkbox" name="dia[]" value="sexta"> Sexta-feira</label>
+                                <label><input type="checkbox" name="dia[]" value="sabado"> Sábado</label>
+                                <label><input type="checkbox" name="dia[]" value="domingo"> Domingo</label>
+                            </div>
+                        </div>
+
+                        <div class="campo">
+                            <label for="horario">Horário da aula</label>
+                            <select id="horario" name="horario" required>
+                                <option value="" disabled selected>Selecione o horário</option>
+                                <option value="08:00">08:00h-09:20h</option>
+                                <option value="10:00">10:00h-11:20h</option>
+                                <option value="14:00">14:00h-15:20h</option>
+                                <option value="16:00">16:00h-17:20h</option>
+                                <option value="19:00">19:00h-20:20h</option>
+                            </select>
+                        </div>
+
+                        <div class="campo">
+                            <label for="capacidade">Capacidade</label>
+                            <input
+                                type="number"
+                                id="capacidade"
+                                name="capacidade"
+                                min="1"
+                                placeholder="Ex: 10"
+                                required
+                            >
+                        </div>
+
+                    </div>
+
+                    <div class="campo">
+                        <label for="professor">Selecionar professor responsável</label>
+                        <select id="professor" name="professor" required>
+                            <option value="" disabled selected>Nome do professor</option>
+                            <option value="1">Ana Martins - Pilates</option>
+                            <option value="2">Carlos Souza - Funcional</option>
+                            <option value="3">Juliana Prado - Spinning</option>
+                            <option value="4">Rafael Lima - Muay Thai</option>
+                            <option value="5">Maria Aparecida - Yoga</option>
+                            <option value="6">Maicon - Ritmos</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="botao">Cadastrar</button>
+
+                </form>
+
+            </section>
+        </main>
+
+    </div>
+
+</body>
+</html>

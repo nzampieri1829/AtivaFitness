@@ -71,10 +71,11 @@ def novo_usuario():
     if request.method == 'GET':
         return render_template('novo_usuario.html')
 
-    nome = request.form('nome', '').strip()
-    email = request.form('email', '').strip()
-    senha = request.form('senha', '')
-    confirmar_senha = request.form('confirmar_senha', '')
+    nome = request.form['nome'].strip()
+    print(nome)
+    email = request.form['email'].strip()
+    senha = request.form['senha']
+    confirmar_senha = request.form['confirmar_senha']
 
 
     # verificar campos preenchidos
@@ -155,23 +156,14 @@ def login():
     if request.method == 'POST':
 
         # Receber os dados do formulario
-        email = request.form('email', '').strip()
-        senha = request.form('senha', '')
+        email = request.form['email'].strip()
+        senha = request.form['senha']
 
         # Verificar se os campos foram preenchidos
         if not email or not senha:
             flash('Preencha o email e a senha.', 'erro')
             return redirect(url_for('login'))
 
-        # Login do administrador
-        if email == "laisadm@gmail.com" and senha == "Laisadm#123":
-
-            session['id_usuario'] = 0
-            session['usuario_nome'] = 'Administrador'
-            session['usuario_email'] = email
-            session['tipo_usuario'] = 0
-
-            return redirect(url_for('dashboard_administrador'))
 
         cursor = con.cursor()
 
@@ -222,10 +214,6 @@ def login():
             # Verificar a senha
             if bcrypt.check_password_hash(senha_hash, senha):
 
-                # Verificar se o tipo e valido
-                if tipo not in (0, 1, 2):
-                    flash('Tipo de usuario invalido.', 'erro')
-                    return redirect(url_for('login'))
 
                 # Guardar os dados na sessao
                 session['id_usuario'] = id_usuario
@@ -244,9 +232,6 @@ def login():
                 )
 
                 con.commit()
-
-                flash('Login realizado com sucesso!', 'sucesso')
-
                 # ALUNO: tipo 1
                 if tipo == 1:
                     return redirect(url_for('index'))
@@ -261,50 +246,58 @@ def login():
                 elif tipo == 2:
                     return redirect(url_for('grade_de_aulas'))
 
+                flash('Login realizado com sucesso!', 'sucesso')
+
+
+
             else:
-                # Senha incorreta
-                tentativas += 1
+                if tipo != 0:
+                    # Senha incorreta
+                    tentativas += 1
 
-                # Bloquear depois de 3 tentativas
-                if tentativas >= 3:
+                    # Bloquear depois de 3 tentativas
+                    if tentativas >= 3:
 
+                        cursor.execute(
+                            """
+                            UPDATE USUARIO
+                            SET tentativas = ?, ativo = ?
+                            WHERE id_usuario = ?
+                            """,
+                            (tentativas, 0, id_usuario)
+                        )
+
+                        con.commit()
+
+                        flash(
+                            'Usuario bloqueado apos 3 tentativas.',
+                            'erro'
+                        )
+
+                        return redirect(url_for('login'))
+
+                    # Atualizar o numero de tentativas
                     cursor.execute(
                         """
                         UPDATE USUARIO
-                        SET tentativas = ?, ativo = ?
+                        SET tentativas = ?
                         WHERE id_usuario = ?
                         """,
-                        (tentativas, 0, id_usuario)
+                        (tentativas, id_usuario)
                     )
 
                     con.commit()
 
                     flash(
-                        'Usuario bloqueado apos 3 tentativas.',
+                        f'Email ou senha incorretos. '
+                        f'Tentativa {tentativas} de 3.',
                         'erro'
                     )
 
                     return redirect(url_for('login'))
-
-                # Atualizar o numero de tentativas
-                cursor.execute(
-                    """
-                    UPDATE USUARIO
-                    SET tentativas = ?
-                    WHERE id_usuario = ?
-                    """,
-                    (tentativas, id_usuario)
-                )
-
-                con.commit()
-
-                flash(
-                    f'Email ou senha incorretos. '
-                    f'Tentativa {tentativas} de 3.',
-                    'erro'
-                )
-
-                return redirect(url_for('login'))
+                else:
+                    flash(f'Email ou senha incorretos. ')
+                    return redirect(url_for('login'))
 
         except Exception as e:
             con.rollback()
@@ -375,6 +368,7 @@ def redirecionar():
         return redirect(url_for('grade_de_aulas'))
 
     else:
+        print(tipo)
         flash('Tipo de usuario invalido.', 'erro')
         return redirect(url_for('login'))
 
@@ -513,65 +507,38 @@ def editar_perfil():
 # Logout
 @app.route('/logout')
 def logout():
-
-
     flash('Voce saiu da sua conta com sucesso!', 'sucesso')
-
     return redirect(url_for('login'))
 
 
 # Grade de aulas
-@app.route('/grade_de_aulas', methods=['GET', 'POST'])
+@app.route('/grade_de_aulas')
 def grade_de_aulas():
 
-    # Verificar se esta logado
     if 'id_usuario' not in session:
         return redirect(url_for('login'))
 
-    tipo = session['tipo_usuario']
+    cursor = con.cursor()
 
-    # Permitir somente os tipos 0, 1 e 2
-    if tipo != 0 and tipo != 1 and tipo != 2:
-        return redirect(url_for('login'))
+    try:
+        cursor.execute("SELECT * FROM AULA ORDER BY DIA, HORARIO")
+        aulas = cursor.fetchall()
 
-    nome = session['usuario_nome']
-    id_usuario = session['id_usuario']
+        return render_template(
+            'grade_de_aulas.html',
+            nome=session['usuario_nome'],
+            tipo=session['tipo_usuario'],
+            id_usuario=session['id_usuario'],
+            aulas=aulas
+        )
 
-    return render_template(
-        'grade_de_aulas.html',
-        nome=nome,
-        tipo=tipo,
-        id_usuario=id_usuario
-    )
-
-
-# Cadastrar aula
-#administrador (0) professor (2)
-@app.route('/cadastrar_aula', methods=['GET', 'POST'])
-def cadastrar_aula():
-
-    if 'id_usuario' not in session:
-        return redirect(url_for('login'))
-
-    tipo = session.get('tipo_usuario')
-
-    if tipo != 0 and tipo != 2:
-        flash('Voce nao tem permissao para cadastrar aulas.', 'erro')
+    except Exception as e:
+        print('Erro ao carregar aulas:', e)
+        flash('Erro ao carregar as aulas.', 'erro')
         return redirect(url_for('redirecionar'))
 
-    if request.method == 'POST':
-        flash(
-            'O salvamento das aulas precisa ser implementado '
-            'conforme as tabelas do banco.',
-            'erro'
-        )
-        return redirect(url_for('cadastrar_aula'))
-
-    return render_template(
-        'cadastrar_aula.html',
-        tipo=tipo,
-        id_usuario=session['id_usuario']
-    )
+    finally:
+        cursor.close()
 
 
 # Editar aula
@@ -596,6 +563,97 @@ def editar_aula(id_aula):
         tipo=tipo,
         id_usuario=session['id_usuario']
     )
+
+
+# Cadastrar aula
+@app.route('/cadastrar_aula', methods=['GET', 'POST'])
+def cadastrar_aula():
+
+    if 'id_usuario' not in session:
+        return redirect(url_for('login'))
+
+    # Somente o administrador pode cadastrar aulas
+    if session['tipo_usuario'] != 0:
+        flash('Você não tem permissão para cadastrar aulas.', 'erro')
+        return redirect(url_for('redirecionar'))
+
+    if request.method == 'POST':
+
+        nome = request.form['nome'].strip()
+        descricao = request.form['descricao'].strip()
+        dias = request.form.getlist('dia[]')
+        horario = request.form['horario']
+        capacidade = request.form['capacidade']
+        professor = request.form['professor']
+
+        # Verificar os campos
+        if not nome or not horario or not capacidade or not professor or not dias:
+            flash('Preencha todos os campos obrigatórios.', 'erro')
+            return redirect(url_for('cadastrar_aula'))
+
+        # Verificar a capacidade
+        try:
+            capacidade = int(capacidade)
+
+            if capacidade < 1 or capacidade > 18:
+                flash('A capacidade deve ser entre 1 e 18 pessoas.', 'erro')
+                return redirect(url_for('cadastrar_aula'))
+
+        except ValueError:
+            flash('Informe uma capacidade válida.', 'erro')
+            return redirect(url_for('cadastrar_aula'))
+
+        cursor = con.cursor()
+
+        try:
+            # Verificar cada dia selecionado
+            for dia in dias:
+                cursor.execute("""
+                    SELECT ID_AULA
+                    FROM AULA
+                    WHERE NOME = ? AND DIA = ? AND HORARIO = ?
+                """, (nome, dia, horario))
+
+                if cursor.fetchone():
+                    flash(
+                        'Essa aula já está cadastrada nesse dia e horário.',
+                        'erro'
+                    )
+                    return redirect(url_for('cadastrar_aula'))
+
+            # Salvar a aula no banco
+            for dia in dias:
+
+                cursor.execute("""
+                    INSERT INTO AULA
+                    (NOME, DESCRICAO, DIA, HORARIO, CAPACIDADE, PROFESSOR)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                """, (
+                    nome,
+                    descricao,
+                    dia,
+                    horario,
+                    capacidade,
+                    professor
+                ))
+
+            con.commit()
+
+            flash('Aula cadastrada com sucesso!', 'sucesso')
+            return redirect(url_for('grade_de_aulas'))
+
+        except Exception as e:
+            con.rollback()
+            print('Erro ao cadastrar aula:', e)
+            flash('Não foi possível cadastrar a aula.', 'erro')
+            return redirect(url_for('cadastrar_aula'))
+
+        finally:
+            cursor.close()
+
+    return render_template('cadastrar_aula.html')
+
+
 
 
 if __name__ == '__main__':
