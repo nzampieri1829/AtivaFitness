@@ -1,7 +1,5 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +9,6 @@
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/grade_de_aulas.css') }}">
 </head>
-
 <body>
 
     <!-- MENSAGENS -->
@@ -25,13 +22,15 @@
         {% endif %}
     {% endwith %}
 
-    <!-- Cabeçalho exibido no celular -->
+    <!-- CABEÇALHO MOBILE -->
+
     <header class="cabecalho-mobile">
         <img src="{{ url_for('static', filename='img/logobranca.png') }}"
              alt="ATIVA Fitness">
     </header>
 
-    <!-- Menu lateral -->
+    <!-- MENU LATERAL -->
+
     <aside class="menu-lateral">
 
         <div class="logo">
@@ -50,112 +49,291 @@
 
     </aside>
 
-    <!-- Conteúdo principal -->
+    <!-- CONTEÚDO PRINCIPAL -->
+
     <main class="conteudo">
 
         <div class="painel">
 
-            <!-- Cabeçalho do painel -->
-            <header class="cabecalho">
+            <!-- CABEÇALHO DO USUÁRIO -->
 
+            <header class="cabecalho">
                 <div class="usuario">
                     <span>{{ nome }}</span>
 
                     <div class="icone-usuario">
-                        <img
-                            src="{{ url_for('static', filename='img/img_perfil_nome.png') }}"
-                            alt="Usuário">
+                        <img src="{{ url_for('static', filename='img/img_perfil_nome.png') }}"
+                             alt="Usuário">
                     </div>
                 </div>
-
             </header>
 
-            <!-- Título -->
+            <!-- TÍTULO -->
+
             <section class="boas-vindas">
                 <h1>Grade de aulas</h1>
                 <p>Veja todas as aulas disponíveis</p>
             </section>
 
-            <!-- Aulas cadastradas no banco -->
+            <!-- LISTA DE AULAS -->
             <section class="atividades">
 
-                {% for aula in aulas %}
+                <!-- YOGA -->
 
-                    <article class="atividade1">
+                <article class="atividade1">
+                    <div class="icone">
+                        <img src="{{ url_for('static', filename='img/logo-ioga.png') }}"
+                             alt="Yoga">
 
-                        <div class="icone">
-                            <img
-                                src="{{ url_for('static', filename='img/logo-ioga.png') }}"
-                                alt="Aula">
+                    </div>
+
+                    <div class="descricao">
+                        <h2>Yoga</h2>
+                        <p>Meditação e relaxamento</p>
+
+                        <div class="horario">
+                            <span class="relogio">◷</span>
+                            <p>Segunda-Feira 9:00<br>
+                               e Sexta-Feira 18:00</p>
                         </div>
+                    </div>
 
-                        <div class="descricao">
+                    {% if tipo == 0 or tipo == 2 %}
+                    <div class="acoes">
+                        <a href="{{ url_for('editar_aula', id_aula=1) }}"
+                           class="btn-acao" title="Editar aula">
+                            <img src="{{ url_for('static', filename='img/icone-editar.png') }}"
+                                 alt="Editar">
+                        </a>
 
-                            <h2>{{ aula[1] }}</h2>
+                        <form action="{{ url_for('excluir_aula', id_aula=1) }}"
+                              method="POST"
+                              onsubmit="return confirm('Deseja excluir esta aula?');">
+                            <button type="submit" class="btn-acao" title="Excluir aula">
 
-                            <p>{{ aula[2] }}</p>
+                                <img src="{{ url_for('static', filename='img/icone-excluir.png') }}"
+                                     alt="Excluir">
+                            </button>
+                        </form>
 
-                            <div class="horario">
-                                <span class="relogio">◷</span>
+                    </div>
+                    {% endif %}
+                </article>
 
-                                <p>
-                                    {{ aula[3] }} às {{ aula[4] }}
-                                </p>
-                            </div>
+                <!-- SPINNING -->
 
-                            <p>
-                                Capacidade: {{ aula[5] }} pessoas
-                            </p>
+                <article class="atividade2">
+                    <div class="icone">
+                        <img src="{{ url_for('static', filename='img/logo-spinning.png') }}"
+                             alt="Spinning">
 
-                            <p>
-                                Professor: {{ aula[6] }}
-                            </p>
+                    </div>
 
+                    <div class="descricao">
+                        <h2>Spinning</h2>
+                        <p>Aula de ciclismo indoor</p>
+
+                        <div class="horario">
+                            <span class="relogio">◷</span>
+                            <p>Terça-Feira 14:00, Quarta-Feira<br>
+                               17:00 e Sexta-Feira 8:00</p>
                         </div>
+                    </div>
 
-                    </article>
+                    {% if tipo == 0 or tipo == 2 %}
+                    <div class="acoes">
+                        <a href="{{ url_for('editar_aula', id_aula=2) }}"
+                           class="btn-acao" title="Editar aula">
+                            <img src="{{ url_for('static', filename='img/icone-editar.png') }}"
+                                 alt="Editar">
+                        </a>
 
-                {% else %}
+                        <form action="{{ url_for('excluir_aula', id_aula=2) }}"
+                              method="POST"
+                              onsubmit="return confirm('Deseja excluir esta aula?');">
+                            <button type="submit" class="btn-acao" title="Excluir aula">
 
-                    <p>Nenhuma aula cadastrada ainda.</p>
+                                <img src="{{ url_for('static', filename='img/icone-excluir.png') }}"
+                                     alt="Excluir">
+                            </button>
+                        </form>
 
-                {% endfor %}
+                    </div>
+                    {% endif %}
+                </article>
+
+                <!-- FUNCIONAL -->
+
+                <article class="atividade3">
+                    <div class="icone">
+                        <img src="{{ url_for('static', filename='img/logo-funcional.png') }}"
+                             alt="Funcional">
+
+                    </div>
+
+                    <div class="descricao">
+                        <h2>Funcional</h2>
+                        <p>Treino dinâmico para melhorar<br>
+                           força e resistência.</p>
+
+                        <div class="horario">
+                            <span class="relogio">◷</span>
+                            <p>Quarta-Feira 10:00 e Quinta-<br>
+                               Feira 16:00</p>
+                        </div>
+                    </div>
+
+                    {% if tipo == 0 or tipo == 2 %}
+                    <div class="acoes">
+                        <a href="{{ url_for('editar_aula', id_aula=3) }}"
+                           class="btn-acao" title="Editar aula">
+                            <img src="{{ url_for('static', filename='img/icone-editar.png') }}"
+                                 alt="Editar">
+                        </a>
+
+                        <form action="{{ url_for('excluir_aula', id_aula=3) }}"
+                              method="POST"
+                              onsubmit="return confirm('Deseja excluir esta aula?');">
+                            <button type="submit" class="btn-acao" title="Excluir aula">
+
+                                <img src="{{ url_for('static', filename='img/icone-excluir.png') }}"
+                                     alt="Excluir">
+                            </button>
+                        </form>
+
+                    </div>
+                    {% endif %}
+                </article>
+
+                <!-- MUAY THAI -->
+
+                <article class="atividade4">
+                    <div class="icone">
+                        <img src="{{ url_for('static', filename='img/logo-muaithay.png') }}"
+                             alt="Muay Thai">
+
+                    </div>
+
+                    <div class="descricao">
+                        <h2>Muay Thai</h2>
+                        <p>Treino de luta para desenvolver força,<br>
+                           agilidade e resistência.</p>
+
+                        <div class="horario">
+                            <span class="relogio">◷</span>
+                            <p>Terça-Feira 19:00 e Quinta-<br>
+                               Feira 19:00</p>
+                        </div>
+                    </div>
+
+                    {% if tipo == 0 or tipo == 2 %}
+                    <div class="acoes">
+                        <a href="{{ url_for('editar_aula', id_aula=4) }}"
+                           class="btn-acao" title="Editar aula">
+                            <img src="{{ url_for('static', filename='img/icone-editar.png') }}"
+                                 alt="Editar">
+                        </a>
+
+                        <form action="{{ url_for('excluir_aula', id_aula=4) }}"
+                              method="POST"
+                              onsubmit="return confirm('Deseja excluir esta aula?');">
+                            <button type="submit" class="btn-acao" title="Excluir aula">
+
+                                <img src="{{ url_for('static', filename='img/icone-excluir.png') }}"
+                                     alt="Excluir">
+                            </button>
+                        </form>
+
+                    </div>
+                    {% endif %}
+                </article>
+
+                <!-- RITMOS -->
+
+                <article class="atividade5">
+                    <div class="icone">
+                        <img src="{{ url_for('static', filename='img/logo-ritmos.png') }}"
+                             alt="Ritmos">
+
+                    </div>
+
+                    <div class="descricao">
+                        <h2>Ritmos</h2>
+                        <p>Aula divertida para melhorar ritmo,<br>
+                           coordenação e condicionamento.</p>
+
+                        <div class="horario">
+                            <span class="relogio">◷</span>
+                            <p>Terça-Feira 9:00 e Quinta-<br>
+                               Feira 14:00</p>
+                        </div>
+                    </div>
+
+                    {% if tipo == 0 or tipo == 2 %}
+                    <div class="acoes">
+                        <a href="{{ url_for('editar_aula', id_aula=5) }}"
+                           class="btn-acao" title="Editar aula">
+                            <img src="{{ url_for('static', filename='img/icone-editar.png') }}"
+                                 alt="Editar">
+                        </a>
+
+                        <form action="{{ url_for('excluir_aula', id_aula=5) }}"
+                              method="POST"
+                              onsubmit="return confirm('Deseja excluir esta aula?');">
+                            <button type="submit" class="btn-acao" title="Excluir aula">
+
+                                <img src="{{ url_for('static', filename='img/icone-excluir.png') }}"
+                                     alt="Excluir">
+                            </button>
+                        </form>
+
+                    </div>
+                    {% endif %}
+                </article>
+
+                <!-- PILATES -->
+
+                <article class="atividade6">
+                    <div class="icone">
+                        <img src="{{ url_for('static', filename='img/logo-pilates.png') }}"
+                             alt="Pilates">
+
+                    </div>
+
+                    <div class="descricao">
+                        <h2>Pilates</h2>
+                        <p>Exercícios para melhorar a postura,<br>
+                           flexibilidade e equilíbrio.</p>
+
+                        <div class="horario">
+                            <span class="relogio">◷</span>
+                            <p>Segunda-Feira 18:00, Quarta-<br>
+                               Feira 9:00 e Sexta-Feira 16:00</p>
+                        </div>
+                    </div>
+
+                    {% if tipo == 0 or tipo == 2 %}
+                    <div class="acoes">
+                        <a href="{{ url_for('editar_aula', id_aula=6) }}"
+                           class="btn-acao" title="Editar aula">
+                            <img src="{{ url_for('static', filename='img/icone-editar.png') }}"
+                                 alt="Editar">
+                        </a>
+
+                        <form action="{{ url_for('excluir_aula', id_aula=6) }}"
+                              method="POST"
+                              onsubmit="return confirm('Deseja excluir esta aula?');">
+                            <button type="submit" class="btn-acao" title="Excluir aula">
+
+                                <img src="{{ url_for('static', filename='img/icone-excluir.png') }}"
+                                     alt="Excluir">
+                            </button>
+                        </form>
+
+                    </div>
+                    {% endif %}
+                </article>
 
             </section>
-
         </div>
-
     </main>
-
-    <!-- Menu inferior para celular -->
-    <nav class="menu-inferior">
-
-        <a href="{{ url_for('index') }}" class="item-menu">
-            <img src="{{ url_for('static', filename='img/icone_home.png') }}"
-                 alt="">
-            <span>Início</span>
-        </a>
-
-        <a href="{{ url_for('editar_perfil') }}" class="item-menu">
-            <img src="{{ url_for('static', filename='img/icone_perfil.png') }}"
-                 alt="">
-            <span>Perfil</span>
-        </a>
-
-        <a href="{{ url_for('grade_de_aulas') }}"
-           class="item-menu selecionado">
-            <img src="{{ url_for('static', filename='img/icone_grade.png') }}"
-                 alt="">
-            <span>Grade de Aulas</span>
-        </a>
-
-        <a href="{{ url_for('logout') }}" class="item-menu">
-            <img src="{{ url_for('static', filename='img/icone_sair.png') }}"
-                 alt="">
-            <span>Sair</span>
-        </a>
-
-    </nav>
-
-</body>
-</html>

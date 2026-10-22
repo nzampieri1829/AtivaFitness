@@ -14,8 +14,6 @@
     --preto: #383838;
 }
 
-
-
 body {
     min-height: 100vh;
     font-family: Arial, Helvetica, sans-serif;
@@ -23,7 +21,30 @@ body {
     color: var(--preto);
 }
 
-/* MENU LATERAL*/
+/* MENSAGENS */
+.mensagem {
+    width: fit-content;
+    max-width: calc(100% - 30px);
+    margin: 12px auto;
+    padding: 10px 16px;
+    border-radius: 7px;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+.mensagem.sucesso {
+    color: #17652a;
+    background-color: #e0f8df;
+    border: 1px solid #65d878;
+}
+
+.mensagem.erro {
+    color: #a32121;
+    background-color: #fde8e8;
+    border: 1px solid #e8aaaa;
+}
+
+/* MENU LATERAL */
 
 .menu-lateral {
     position: fixed;
@@ -40,122 +61,15 @@ body {
     overflow: hidden;
 }
 
-/*  decoração verde  */
-
-.menu-lateral::after {
-    content: "";
-    position: absolute;
-    width: 105px;
-    height: 210px;
-    left: -46px;
-    bottom: 65px;
-    background: #0cbd36;
-    border-radius: 12px;
-    transform: rotate(45deg);
-    opacity: 0.9;
-    pointer-events: none;
-}
-
-.logo {
-    width: 100%;
-    height: 83px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    margin-bottom: 21px;
-    position: relative;
-    z-index: 1;
-}
-
-.logo img {
-    width: 100px;
-    height: 65px;
-    object-fit: contain;
-}
-
-.menu-lateral nav {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    position: relative;
-    z-index: 2;
-}
-
-.menu-lateral nav a {
-    min-height: 34px;
-    padding: 9px 24px;
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: #ffffff;
-    font-size: 15px;
-    border: 1px solid rgba(0, 30, 15, 0.35);
-    border-radius: 9px;
-    transition: background 0.2s ;
-}
-
-.menu-lateral nav a:hover {
-    background-color: rgba(0, 190, 45, 0.35);
-}
-
-.menu-lateral nav a.ativo {
-    background-color: #0bb52e;
-    border-color: #0bb52e;
-    font-weight: bold;
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.16);
-}
-
-/*CABEÇALHO MOBILE*/
-
-.cabecalho-mobile {
-    display: none;
-}
-
-/*CONTEÚDO PRINCIPAL*/
-
-.conteudo {
-    min-height: 100vh;
-    margin-left: 180px;
-    padding: 40px 27px 24px;
-    display: flex;
-    justify-content: center;
-    align-items: stretch;
-}
-
-.painel {
-    width: 100%;
-    max-width: 1000px;
+Mostrar texto das mensagens anteriores
+    margin-left: 205px;
+Mostrar texto das mensagens anteriores
     min-width: 0;
-    min-height: calc(100vh - 64px);
-    padding: 8px 31px 32px;
-    border: 1.5px solid #3d3d3d;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    background-color: #ffffff;
-}
-
-/* CABEÇALHO DO USUÁRIO*/
-
-.cabecalho {
-    width: 100%;
-    min-height: 32px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.usuario {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 5px;
-    color: #00672c;
-    font-size: 10px;
 }
 
 .icone-usuario {
+    flex: 0 0 32px;
+
     width: 32px;
     height: 32px;
     border: 1.5px solid var(--verde);
@@ -172,7 +86,7 @@ body {
     object-fit: contain;
 }
 
-/*TÍTULO DA PÁGINA */
+/* TÍTULO */
 
 .boas-vindas {
     margin-top: 19px;
@@ -194,75 +108,23 @@ body {
 }
 
 /* LISTA DE AULAS */
-
 .atividades {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
 }
 
-.atividade1 {
-    width: 100%;
-    min-height: 66px;
-    padding: 10px 12px;
-    background-color: var(--cinza-fundo);
-    border: 1px solid #65d878;
-    border-radius: 9px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.atividade2 {
-    width: 100%;
-    min-height: 66px;
-    padding: 10px 12px;
-    background-color: var(--cinza-fundo);
-    border: 1px solid #65d878;
-    border-radius: 9px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    }
-
-.atividade3 {
-    width: 100%;
-    min-height: 66px;
-    padding: 10px 12px;
-    background-color: var(--cinza-fundo);
-    border: 1px solid #65d878;
-    border-radius: 9px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    }
-
-.atividade4 {    width: 100%;
-    min-height: 66px;
-    padding: 10px 12px;
-    background-color: var(--cinza-fundo);
-    border: 1px solid #65d878;
-    border-radius: 9px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    }
-
-.atividade5 {
-    width: 100%;
-    min-height: 66px;
-    padding: 10px 12px;
-    background-color: var(--cinza-fundo);
-    border: 1px solid #65d878;
-    border-radius: 9px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    }
+.atividade1,
+.atividade2,
+.atividade3,
+.atividade4,
+.atividade5,
 .atividade6 {
     width: 100%;
-    min-height: 66px;
+    min-width: 0;
+    min-height: 76px;
+
     padding: 10px 12px;
     background-color: var(--cinza-fundo);
     border: 1px solid #65d878;
@@ -272,52 +134,49 @@ body {
     gap: 10px;
 }
 
-.icone-editar{
-    width: 50px;
-    height: 50px;
-    border-radius: 10px;
-    margin-right: 460px
+/* ÍCONES DAS AULAS */
+.icone {
+    flex: 0 0 65px;
+    width: 65px;
+    height: 65px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-
-.icone-excluir{
-    width: 50px;
-    height: 50px;
-    border-radius: 10px;
-    margin-right: 390px
-}
-
-
-
-/* Círculo dos ícones */
 
 .icone img {
-    width: 75px;
-    height: 75px;
 
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
-/* Nome e descrição da aula */
+/* DESCRIÇÃO DAS AULAS */
 
 .descricao {
     min-width: 0;
     flex: 1;
+    overflow-wrap: break-word;
+
 }
 
 .descricao h2 {
     color: #383838;
     font-size: 16px;
     font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 2px;
+    line-height: 1.2;
+    margin-bottom: 3px;
+
 }
 
 .descricao > p {
     color: #969696;
     font-size: 13.5px;
-    line-height: 1.2;
+    line-height: 1.3;
 }
 
-/* Horários */
+/* HORÁRIOS */
 
 .horario {
     display: flex;
@@ -327,31 +186,128 @@ body {
 }
 
 .relogio {
-
+    flex-shrink: 0;
     font-size: 17px;
-    line-height: 13px;
+    line-height: 1.1;
+
     color: #858585;
 }
 
 .horario p {
     color: #929292;
     font-size: 13px;
-    line-height: 1.2;
+    line-height: 1.3;
+}
+
+/* BOTÕES EDITAR E EXCLUIR */
+.acoes {
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+    margin-right: 8px;
+}
+
+.acoes form {
+    display: flex;
+    margin: 0;
+}
+
+.btn-acao {
+    flex: 0 0 34px;
+
+    width: 34px;
+    height: 34px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    border: none;
+    background: transparent;
+    text-decoration: none;
+    cursor: pointer;
+
+    transition: transform 0.2s;
+}
+
+.btn-acao:hover {
+    transform: scale(1.08);
+}
+
+.btn-acao img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 /* MENU INFERIOR */
-
 .menu-inferior {
     display: none;
 }
 
-/* Responsividade*/
+.item-menu {
+    text-decoration: none;
+}
+
+/* TABLETS E JANELAS INTERMEDIÁRIAS */
+@media (min-width: 601px) and (max-width: 900px) {
+    .menu-lateral {
+        width: 175px;
+    }
+
+    .menu-lateral nav a {
+        padding: 9px 12px;
+    }
+
+    .conteudo {
+        margin-left: 175px;
+        padding: 24px 16px;
+    }
+
+    .painel {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .atividade1,
+    .atividade2,
+    .atividade3,
+    .atividade4,
+    .atividade5,
+    .atividade6 {
+        gap: 7px;
+        padding: 8px;
+    }
+
+    .icone {
+        flex-basis: 52px;
+        width: 52px;
+        height: 52px;
+    }
+
+    .acoes {
+        gap: 6px;
+        margin-right: 0;
+    }
+
+    .btn-acao {
+        flex-basis: 30px;
+        width: 30px;
+        height: 30px;
+    }
+}
+
+/* RESPONSIVIDADE PARA CELULARES */
 
 @media (max-width: 600px) {
-
     body {
         background-color: #ffffff;
-        padding-bottom: 72px;
+        padding-bottom: 80px;
+
     }
 
     .menu-lateral {
@@ -375,6 +331,8 @@ body {
     }
 
     .conteudo {
+        width: 100%;
+
         margin-left: 0;
         min-height: auto;
         padding: 20px 14px;
@@ -382,6 +340,8 @@ body {
     }
 
     .painel {
+        width: 100%;
+
         max-width: none;
         min-height: auto;
         padding: 12px 13px 20px;
@@ -414,18 +374,28 @@ body {
         gap: 9px;
     }
 
-    .atividade {
+    .atividade1,
+    .atividade2,
+    .atividade3,
+    .atividade4,
+    .atividade5,
+    .atividade6 {
+        min-width: 0;
         min-height: 75px;
         padding: 8px;
-        gap: 10px;
-        border-radius: 9px;
+        gap: 8px;
     }
 
     .icone {
-        flex-basis: 46px;
-        width: 46px;
-        height: 46px;
-        font-size: 24px;
+        flex: 0 0 42px;
+        width: 42px;
+        height: 42px;
+    }
+
+    .descricao {
+        flex: 1;
+        min-width: 0;
+
     }
 
     .descricao h2 {
@@ -438,13 +408,33 @@ body {
 
     .horario {
         margin-top: 5px;
-        gap: 5px;
+        gap: 4px;
+    }
+
+    .relogio {
+        font-size: 14px;
+
     }
 
     .horario p {
         font-size: 9px;
         line-height: 1.3;
     }
+
+    .acoes {
+        flex-shrink: 0;
+        gap: 5px;
+        margin-left: auto;
+        margin-right: 0;
+    }
+
+    .btn-acao {
+        flex-basis: 26px;
+        width: 26px;
+        height: 26px;
+    }
+
+    /* MENU INFERIOR FIXO */
 
     .menu-inferior {
         position: fixed;
@@ -470,8 +460,9 @@ body {
         justify-content: center;
         gap: 4px;
         color: #555555;
-        text-decoration: none;
         font-size: 9px;
+        text-align: center;
+
     }
 
     .item-menu img {
@@ -490,8 +481,9 @@ body {
     }
 }
 
-@media (max-width: 360px) {
+/* CELULARES ESTREITOS */
 
+@media (max-width: 360px) {
     .conteudo {
         padding: 14px 8px;
     }
@@ -500,25 +492,39 @@ body {
         padding: 10px 8px 16px;
     }
 
-    .atividade {
-        gap: 7px;
+    .atividade1,
+    .atividade2,
+    .atividade3,
+    .atividade4,
+    .atividade5,
+    .atividade6 {
+        gap: 5px;
         padding: 7px 5px;
     }
 
     .icone {
-        flex-basis: 40px;
-        width: 40px;
-        height: 40px;
-        font-size: 21px;
+        flex-basis: 34px;
+        width: 34px;
+        height: 34px;
     }
 
     .descricao h2 {
-        font-size: 13px;
+        font-size: 12px;
     }
 
     .descricao > p,
     .horario p {
-        font-size: 8.5px;
+        font-size: 8px;
+    }
+
+    .acoes {
+        gap: 3px;
+    }
+
+    .btn-acao {
+        flex-basis: 22px;
+        width: 22px;
+        height: 22px;
     }
 
     .item-menu {

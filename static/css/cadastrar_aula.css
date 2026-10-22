@@ -321,7 +321,7 @@ a {
 .dias-semana {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
 }
 
 .dias-semana label {

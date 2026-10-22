@@ -28,9 +28,8 @@ def home():
     return render_template('landingpage.html')
 
 
-# Funcao para verificar se a senha e forte
+# verificar se a senha e forte
 def senha_forte(senha):
-
     if len(senha) < 8:
         return False
 
@@ -79,9 +78,6 @@ def novo_usuario():
 
 
     # verificar campos preenchidos
-    if not nome or not email or not senha or not confirmar_senha:
-        flash('Preencha todos os campos.', 'erro')
-        return redirect(url_for('novo_usuario'))
 
     # verificar senha igual
     if senha != confirmar_senha:
@@ -171,14 +167,7 @@ def login():
             # Buscar o usuario pelo email
             cursor.execute(
                 """
-                SELECT
-                    id_usuario,
-                    nome,
-                    email,
-                    senha,
-                    tentativas,
-                    ativo,
-                    tipo
+                SELECT id_usuario,nome,email,senha,tentativas,ativo,tipo
                 FROM USUARIO
                 WHERE email = ?
                 """,
@@ -232,6 +221,7 @@ def login():
                 )
 
                 con.commit()
+
                 # ALUNO: tipo 1
                 if tipo == 1:
                     return redirect(url_for('index'))
@@ -320,7 +310,7 @@ def index():
         return redirect(url_for('login'))
 
     # Verificar se é aluno
-    if session.get('tipo_usuario') != 1:
+    if session['tipo_usuario'] != 1:
         flash('Voce não tem permissao para acessar esta pagina.', 'erro')
         return redirect(url_for('redirecionar'))
 
@@ -339,17 +329,47 @@ def dashboard_administrador():
     if 'id_usuario' not in session:
         return redirect(url_for('login'))
 
-    if session.get('tipo_usuario') != 0:
+    if session['tipo_usuario'] != 0:
         flash('Voce nao tem permissao para acessar esta pagina.', 'erro')
         return redirect(url_for('redirecionar'))
 
-    nome = session.get('usuario_nome')
+    cursor = con.cursor()
 
-    return render_template(
-        'dashboard_administrador.html',
-        nome=nome
-    )
-# Redirecionar conforme o tipo de usuario
+    try:
+        # Buscar o nome atualizado no banco
+        cursor.execute(
+            """
+            SELECT nome
+            FROM USUARIO
+            WHERE id_usuario = ?
+            """,
+            (session['id_usuario'],)
+        )
+
+        usuario = cursor.fetchone()
+
+        if usuario is None:
+            return redirect(url_for('login'))
+
+        nome = usuario[0]
+
+        # Manter o nome da sessao atualizado
+        session['usuario_nome'] = nome
+
+        return render_template(
+            'dashboard_administrador.html',
+            nome=nome
+        )
+
+    except Exception:
+        con.rollback()
+        flash('Nao foi possivel carregar o dashboard.', 'erro')
+        return redirect(url_for('login'))
+
+    finally:
+        cursor.close()
+
+# Redirecionar pelo o tipo de usuario
 @app.route('/redirecionar')
 def redirecionar():
 
@@ -377,132 +397,92 @@ def redirecionar():
 @app.route('/editar_perfil', methods=['GET', 'POST'])
 def editar_perfil():
 
-    # Verificar se esta logado
     if 'id_usuario' not in session:
         return redirect(url_for('login'))
 
-    # Verificar se o tipo e valido
-    tipo = session.get('tipo_usuario')
+    tipo = session['tipo_usuario']
 
-    if tipo != 0 and tipo != 1 and tipo != 2:
+    if tipo not in (0, 1, 2):
         return redirect(url_for('login'))
 
     id_usuario = session['id_usuario']
     cursor = con.cursor()
 
     try:
-
         if request.method == 'POST':
+            nome = request.form['nome'].strip()
+            email = request.form['email'].strip()
+            senha = request.form['senha']
+            confirmar_senha = request.form['confirmar_senha']
 
-            nome = request.form('nome').strip()
-            email = request.form('email').strip()
-            senha = request.form('senha')
-            confirmar_senha = request.form('confirmar_senha')
-
-            # Verificar nome e email
             if not nome or not email:
                 flash('Preencha o nome e o e-mail.', 'erro')
                 return redirect(url_for('editar_perfil'))
 
-            # Verificar se as senhas sao iguais
-            if senha != confirmar_senha:
-                flash('As senhas nao sao iguais.', 'erro')
-                return redirect(url_for('editar_perfil'))
+            if senha or confirmar_senha:
+                if senha != confirmar_senha:
+                    flash('As senhas nao sao iguais.', 'erro')
+                    return redirect(url_for('editar_perfil'))
 
-            # Verificar se a nova senha e forte
-            if senha and not senha_forte(senha):
-                flash(
-                    'A senha deve ter pelo menos 8 caracteres, '
-                    'uma letra maiuscula, uma letra minuscula, '
-                    'um numero e um caractere especial.',
-                    'erro'
-                )
-                return redirect(url_for('editar_perfil'))
+                if not senha_forte(senha):
+                    flash('A senha nao atende aos requisitos de seguranca.', 'erro')
+                    return redirect(url_for('editar_perfil'))
 
-            # Verificar se o email pertence a outro usuario
-            cursor.execute(
-                """
-                SELECT id_usuario
-                FROM USUARIO
+            cursor.execute("""
+                SELECT id_usuario FROM USUARIO
                 WHERE email = ? AND id_usuario <> ?
-                """,
-                (email, id_usuario)
-            )
+            """, (email, id_usuario))
 
             if cursor.fetchone():
                 flash('Este e-mail ja esta cadastrado.', 'erro')
                 return redirect(url_for('editar_perfil'))
 
-            # Atualizar nome, email e senha
             if senha:
-
-                senha_hash = bcrypt.generate_password_hash(
-                    senha
-                ).decode('utf-8')
-
-                cursor.execute(
-                    """
+                senha = bcrypt.generate_password_hash(senha).decode('utf-8')
+                cursor.execute("""
                     UPDATE USUARIO
                     SET nome = ?, email = ?, senha = ?
                     WHERE id_usuario = ?
-                    """,
-                    (nome, email, senha_hash, id_usuario)
-                )
-
+                """, (nome, email, senha, id_usuario))
             else:
-
-                cursor.execute(
-                    """
+                cursor.execute("""
                     UPDATE USUARIO
                     SET nome = ?, email = ?
                     WHERE id_usuario = ?
-                    """,
-                    (nome, email, id_usuario)
-                )
+                """, (nome, email, id_usuario))
 
             con.commit()
-
-            # Atualizar os dados da sessao
             session['usuario_nome'] = nome
             session['usuario_email'] = email
 
             flash('Perfil atualizado com sucesso!', 'sucesso')
             return redirect(url_for('editar_perfil'))
 
-        # Buscar os dados do usuario logado
-        cursor.execute(
-            """
-            SELECT nome, email
-            FROM USUARIO
+        cursor.execute("""
+            SELECT nome, email FROM USUARIO
             WHERE id_usuario = ?
-            """,
-            (id_usuario,)
-        )
+        """, (id_usuario,))
 
         usuario = cursor.fetchone()
 
-        if usuario is None:
+        if not usuario:
             return redirect(url_for('login'))
-
-        nome = usuario[0]
-        email = usuario[1]
 
         return render_template(
             'editar_perfil.html',
-            nome=nome,
-            email=email,
+            nome=usuario[0],
+            email=usuario[1],
             tipo=tipo,
             id_usuario=id_usuario
         )
 
-    except Exception as e:
+    except Exception:
         con.rollback()
         flash('Nao foi possivel atualizar o perfil.', 'erro')
         return redirect(url_for('editar_perfil'))
 
     finally:
         cursor.close()
-
 
 # Logout
 @app.route('/logout')
@@ -512,18 +492,20 @@ def logout():
 
 
 # Grade de aulas
-@app.route('/grade_de_aulas', methods=['GET', 'POST'])
+@app.route('/grade_de_aulas')
 def grade_de_aulas():
+    print('entrei')
 
     if 'id_usuario' not in session:
         return redirect(url_for('login'))
-
     cursor = con.cursor()
 
     try:
-        cursor.execute("""SELECT id_aula, horario, capacidade, id_modalidade, id_usuario
-                       FROM AULA 
-                       ORDER BY DIA, HORARIO""")
+        cursor.execute("""
+            SELECT ID_AULA, HORARIO, CAPACIDADE, ID_MODALIDADE, ID_USUARIO
+            FROM AULA
+            ORDER BY DIA, HORARIO
+        """)
         aulas = cursor.fetchall()
 
         return render_template(
@@ -544,7 +526,7 @@ def grade_de_aulas():
 
 
 # Editar aula
-# administrador (0)  professor (2)
+# administrador - 0  professor -2
 @app.route('/editar_aula/<int:id_aula>', methods=['GET', 'POST'])
 def editar_aula(id_aula):
 
@@ -567,6 +549,8 @@ def editar_aula(id_aula):
     )
 
 
+
+
 # Cadastrar aula
 @app.route('/cadastrar_aula', methods=['GET', 'POST'])
 def cadastrar_aula():
@@ -574,87 +558,120 @@ def cadastrar_aula():
     if 'id_usuario' not in session:
         return redirect(url_for('login'))
 
-    # Somente o administrador pode cadastrar aulas
-    if session['tipo_usuario'] != 0:
+    # Somente administrador pode cadastrar aulas
+    if session.get('tipo_usuario') != 0:
         flash('Você não tem permissão para cadastrar aulas.', 'erro')
         return redirect(url_for('redirecionar'))
 
-    if request.method == 'POST':
+    cursor = con.cursor()
 
-        nome = request.form['nome'].strip()
-        descricao = request.form['descricao'].strip()
-        dias = request.form.getlist('dia[]')
-        horario = request.form['horario']
-        capacidade = request.form['capacidade']
-        professor = request.form['professor']
+    try:
+        # Buscar os professores cadastrados no banco
+        cursor.execute("""
+            SELECT ID_USUARIO, NOME
+            FROM USUARIO
+            WHERE TIPO = 2
+              AND ATIVO = 1
+            ORDER BY NOME
+        """)
 
-        # Verificar os campos
-        if not nome or not horario or not capacidade or not professor or not dias:
+        professores = cursor.fetchall()
+
+        if request.method == 'GET':
+            return render_template(
+                'cadastrar_aula.html',
+                professores=professores
+            )
+
+        # Receber os dados do formulário
+        horario = request.form['horario'].strip()
+        capacidade = request.form['capacidade'].strip()
+        modalidade = request.form['modalidade'].strip()
+        professor = request.form['professor'].strip()
+
+
+        # Validar os campos
+        if not horario or not capacidade or not modalidade or not professor:
             flash('Preencha todos os campos obrigatórios.', 'erro')
             return redirect(url_for('cadastrar_aula'))
 
-        # Verificar a capacidade
+        # Validar os valores numéricos
         try:
             capacidade = int(capacidade)
-
-            if capacidade < 1 or capacidade > 18:
-                flash('A capacidade deve ser entre 1 e 18 pessoas.', 'erro')
-                return redirect(url_for('cadastrar_aula'))
-
+            modalidade = int(modalidade)
+            professor = int(professor)
         except ValueError:
-            flash('Informe uma capacidade válida.', 'erro')
+            flash('Modalidade, professor e capacidade devem ser válidos.', 'erro')
             return redirect(url_for('cadastrar_aula'))
 
-        cursor = con.cursor()
-
-        try:
-            # Verificar cada dia selecionado
-            for dia in dias:
-                cursor.execute("""
-                    SELECT ID_AULA
-                    FROM AULA
-                    WHERE NOME = ? AND DIA = ? AND HORARIO = ?
-                """, (nome, dia, horario))
-
-                if cursor.fetchone():
-                    flash(
-                        'Essa aula já está cadastrada nesse dia e horário.',
-                        'erro'
-                    )
-                    return redirect(url_for('cadastrar_aula'))
-
-            # Salvar a aula no banco
-            for dia in dias:
-
-                cursor.execute("""
-                    INSERT INTO AULA
-                    (NOME, DESCRICAO, DIA, HORARIO, CAPACIDADE, PROFESSOR)
-                    VALUES (?, ?, ?, ?, ?, ?)
-                """, (
-                    nome,
-                    descricao,
-                    dia,
-                    horario,
-                    capacidade,
-                    professor
-                ))
-
-            con.commit()
-
-            flash('Aula cadastrada com sucesso!', 'sucesso')
-            return redirect(url_for('grade_de_aulas'))
-
-        except Exception as e:
-            con.rollback()
-            print('Erro ao cadastrar aula:', e)
-            flash('Não foi possível cadastrar a aula.', 'erro')
+        if capacidade < 1 or capacidade > 18:
+            flash('A capacidade deve ser entre 1 e 18 pessoas.', 'erro')
             return redirect(url_for('cadastrar_aula'))
 
-        finally:
-            cursor.close()
+        # Verificar se o professor existe e é um professor ativo
+        cursor.execute("""
+            SELECT ID_USUARIO
+            FROM USUARIO
+            WHERE ID_USUARIO = ?
+              AND TIPO = 2
+              AND ATIVO = 1
+        """, (professor,))
 
-    return render_template('cadastrar_aula.html')
+        if cursor.fetchone() is None:
+            flash('O professor selecionado não existe ou está inativo.', 'erro')
+            return redirect(url_for('cadastrar_aula'))
 
+        # Verificar se já existe aula com a mesma modalidade,
+        # horário e professor
+        cursor.execute("""
+            SELECT ID_AULA
+            FROM AULA
+            WHERE HORARIO = ?
+              AND ID_MODALIDADE = ?
+              AND ID_USUARIO = ?
+        """, (horario, modalidade, professor))
+
+        if cursor.fetchone():
+            flash(
+                'Já existe uma aula dessa modalidade, '
+                'nesse horário e com esse professor.',
+                'erro'
+            )
+            return redirect(url_for('cadastrar_aula'))
+
+        # Inserir usando apenas as colunas existentes na tabela AULA
+        cursor.execute("""
+            INSERT INTO AULA
+                (HORARIO, CAPACIDADE, ID_MODALIDADE, ID_USUARIO)
+            VALUES (?, ?, ?, ?)
+        """, (
+            horario,
+            capacidade,
+            modalidade,
+            professor
+        ))
+
+        con.commit()
+
+        flash('Aula cadastrada com sucesso!', 'sucesso')
+        return redirect(url_for('grade_de_aulas'))
+
+    except Exception as e:
+        con.rollback()
+
+        # Mostrar o erro completo no terminal
+        print('ERRO AO CADASTRAR AULA:', repr(e))
+
+        flash(
+            'Não foi possível cadastrar a aula. '
+            'Verifique o erro no terminal.',
+            'erro'
+        )
+
+        return redirect(url_for('cadastrar_aula'))
+
+    finally:
+        cursor.close()
 
 
 
