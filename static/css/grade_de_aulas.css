@@ -1,47 +1,32 @@
+
+/* CONFIGURAÇÕES GERAIS */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-size: 15px;
 }
 
 :root {
-    --verde: #08b52d;
-    --verde-escuro: #00552b;
-    --verde-claro: #e0f8df;
-    --cinza-fundo: #f1f1f1;
-    --cinza-texto: #929292;
-    --preto: #383838;
+    --verde-principal: #238636;
+    --verde-escuro: #17652A;
+    --verde-claro: #0acb52;
+
+    --branco: #FFFFFF;
+    --cinza-claro: #F5F5F5;
+    --cinza-medio: #808080;
+    --cinza-escuro: #333333;
+    --preto: #111111;
+
+    --sucesso: #2E7D32;
+    --erro: #D32F2F;
 }
 
 body {
     min-height: 100vh;
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #ffffff;
-    color: var(--preto);
-}
-
-/* MENSAGENS */
-.mensagem {
-    width: fit-content;
-    max-width: calc(100% - 30px);
-    margin: 12px auto;
-    padding: 10px 16px;
-    border-radius: 7px;
-    text-align: center;
-    overflow-wrap: anywhere;
-}
-
-.mensagem.sucesso {
-    color: #17652a;
-    background-color: #e0f8df;
-    border: 1px solid #65d878;
-}
-
-.mensagem.erro {
-    color: #a32121;
-    background-color: #fde8e8;
-    border: 1px solid #e8aaaa;
+    background-color: var(--branco);
+    color: var(--cinza-escuro);
+    font-size: 15px;
 }
 
 /* MENU LATERAL */
@@ -50,7 +35,7 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 205px;
+    width: 240px;
     height: 100vh;
     padding: 15px 10px;
     background: linear-gradient(145deg, #006332, #004b25);
@@ -61,18 +46,199 @@ body {
     overflow: hidden;
 }
 
-Mostrar texto das mensagens anteriores
+/* DECORAÇÃO VERDE */
+
+.menu-lateral::after {
+    content: "";
+    position: absolute;
+    width: 105px;
+    height: 210px;
+    left: -46px;
+    bottom: 65px;
+    background: #0cbd36;
+    border-radius: 12px;
+    transform: rotate(45deg);
+    opacity: 0.9;
+    pointer-events: none;
+}
+
+.logo {
+    width: 100%;
+    height: 83px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    margin-bottom: 21px;
+    position: relative;
+    z-index: 1;
+}
+
+.logo img {
+    width: 100px;
+    height: 65px;
+    object-fit: contain;
+}
+
+.menu-lateral nav {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    z-index: 2;
+}
+
+.menu-lateral nav a {
+    min-height: 34px;
+    padding: 9px 24px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--branco);
+    font-size: 15px;
+    border: 1px solid rgba(0, 30, 15, 0.35);
+    border-radius: 9px;
+    transition: background 0.2s;
+}
+
+.menu-lateral nav a:hover {
+    background-color: rgba(0, 190, 45, 0.35);
+}
+
+.menu-lateral nav a.ativo {
+    background-color: #0acb52;
+    font-weight: 500;
+}
+
+/* MENSAGENS */
+.mensagens {
+    position: relative;
+    z-index: 30;
+    padding: 1px 12px;
+}
+
+.mensagem {
+    width: fit-content;
+    max-width: 100%;
+    margin: 12px auto;
+    padding: 10px 16px;
+    border-radius: 7px;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+.mensagem.sucesso {
+    color: var(--sucesso);
+    background-color: var(--branco);
+    border: 1px solid var(--sucesso);
+}
+
+.mensagem.erro {
+    color: var(--erro);
+    background-color: var(--branco);
+    border: 1px solid var(--erro);
+}
+
+/* CABEÇALHO MOBILE */
+.cabecalho-mobile {
+    display: none;
+}
+
+/* MENU LATERAL */
+.menu-lateral {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 205px;
+    height: 100vh;
+    padding: 15px 10px;
+    background: linear-gradient(145deg, #006332, #004b25);;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+    overflow-y: auto;
+}
+
+.logo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.logo img {
+    width: 135px;
+    max-width: 100%;
+    height: 90px;
+    object-fit: contain;
+}
+
+.menu-lateral nav {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.menu-lateral nav a {
+    display: block;
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 7px;
+    color: var(--branco);
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.menu-lateral nav a:hover,
+.menu-lateral nav a.ativo {
+    background-color: #0bb52e;
+    border-color: #0bb52e;
+}
+
+/* CONTEÚDO PRINCIPAL */
+.conteudo {
     margin-left: 205px;
-Mostrar texto das mensagens anteriores
     min-width: 0;
+    min-height: 100vh;
+    padding: 30px 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.painel {
+    width: 100%;
+    max-width: 1100px;
+    min-width: 0;
+    padding: 20px 24px 30px;
+    background-color: var(--branco);
+    border: 1px solid var(--cinza-claro);
+    border-radius: 10px;
+}
+
+/* CABEÇALHO DO USUÁRIO */
+.cabecalho {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-height: 40px;
+}
+
+.usuario {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--cinza-escuro);
+    overflow-wrap: anywhere;
 }
 
 .icone-usuario {
     flex: 0 0 32px;
-
     width: 32px;
     height: 32px;
-    border: 1.5px solid var(--verde);
+    border: 1.5px solid var(--verde-principal);
     border-radius: 6px;
     display: flex;
     justify-content: center;
@@ -87,7 +253,6 @@ Mostrar texto das mensagens anteriores
 }
 
 /* TÍTULO */
-
 .boas-vindas {
     margin-top: 19px;
     margin-bottom: 24px;
@@ -97,14 +262,13 @@ Mostrar texto das mensagens anteriores
     font-size: 28px;
     line-height: 1.25;
     font-weight: 700;
-    color: #393939;
+    color: var(--cinza-escuro);
     margin-bottom: 3px;
 }
 
 .boas-vindas p {
     font-size: 17px;
-    color: #999999;
-    font-weight: 400;
+    color: var(--cinza-medio);
 }
 
 /* LISTA DE AULAS */
@@ -112,26 +276,20 @@ Mostrar texto das mensagens anteriores
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
 }
 
-.atividade1,
-.atividade2,
-.atividade3,
-.atividade4,
-.atividade5,
-.atividade6 {
+.atividade {
     width: 100%;
     min-width: 0;
-    min-height: 76px;
-
-    padding: 10px 12px;
-    background-color: var(--cinza-fundo);
-    border: 1px solid #65d878;
+    min-height: 90px;
+    padding: 12px;
+    background-color: var(--cinza-claro);
+    border: 1px solid var(--verde-principal);
     border-radius: 9px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 /* ÍCONES DAS AULAS */
@@ -139,45 +297,45 @@ Mostrar texto das mensagens anteriores
     flex: 0 0 65px;
     width: 65px;
     height: 65px;
-
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .icone img {
-
     width: 100%;
     height: 100%;
     object-fit: contain;
 }
 
 /* DESCRIÇÃO DAS AULAS */
-
 .descricao {
     min-width: 0;
     flex: 1;
     overflow-wrap: break-word;
-
 }
 
 .descricao h2 {
-    color: #383838;
+    color: var(--cinza-escuro);
     font-size: 16px;
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.3;
     margin-bottom: 3px;
-
 }
 
 .descricao > p {
-    color: #969696;
-    font-size: 13.5px;
-    line-height: 1.3;
+    color: var(--cinza-medio);
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.descricao .capacidade {
+    margin-top: 5px;
+    color: var(--cinza-escuro);
+    font-size: 12px;
 }
 
 /* HORÁRIOS */
-
 .horario {
     display: flex;
     align-items: flex-start;
@@ -189,25 +347,23 @@ Mostrar texto das mensagens anteriores
     flex-shrink: 0;
     font-size: 17px;
     line-height: 1.1;
-
-    color: #858585;
+    color: var(--cinza-medio);
 }
 
 .horario p {
-    color: #929292;
+    color: var(--cinza-medio);
     font-size: 13px;
-    line-height: 1.3;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
 }
 
 /* BOTÕES EDITAR E EXCLUIR */
 .acoes {
     flex-shrink: 0;
-
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     margin-left: auto;
-    margin-right: 8px;
 }
 
 .acoes form {
@@ -217,7 +373,6 @@ Mostrar texto das mensagens anteriores
 
 .btn-acao {
     flex: 0 0 34px;
-
     width: 34px;
     height: 34px;
     display: flex;
@@ -225,10 +380,10 @@ Mostrar texto das mensagens anteriores
     align-items: center;
     padding: 0;
     border: none;
+    border-radius: 5px;
     background: transparent;
     text-decoration: none;
     cursor: pointer;
-
     transition: transform 0.2s;
 }
 
@@ -238,10 +393,28 @@ Mostrar texto das mensagens anteriores
 
 .btn-acao img {
     display: block;
-
     width: 100%;
     height: 100%;
     object-fit: contain;
+}
+
+/* QUANDO NÃO HÁ AULAS */
+.sem-aulas {
+    padding: 35px 15px;
+    text-align: center;
+    background-color: var(--cinza-claro);
+    border: 1px dashed var(--cinza-medio);
+    border-radius: 9px;
+}
+
+.sem-aulas h2 {
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+
+.sem-aulas p {
+    color: var(--cinza-medio);
+    font-size: 14px;
 }
 
 /* MENU INFERIOR */
@@ -253,14 +426,18 @@ Mostrar texto das mensagens anteriores
     text-decoration: none;
 }
 
-/* TABLETS E JANELAS INTERMEDIÁRIAS */
+/* TABLETS */
 @media (min-width: 601px) and (max-width: 900px) {
     .menu-lateral {
-        width: 175px;
+        width: 201px;
+    }
+
+    .logo img {
+        width: 120px;
     }
 
     .menu-lateral nav a {
-        padding: 9px 12px;
+        padding: 10px;
     }
 
     .conteudo {
@@ -269,18 +446,12 @@ Mostrar texto das mensagens anteriores
     }
 
     .painel {
-        padding-left: 18px;
-        padding-right: 18px;
+        padding: 18px;
     }
 
-    .atividade1,
-    .atividade2,
-    .atividade3,
-    .atividade4,
-    .atividade5,
-    .atividade6 {
-        gap: 7px;
-        padding: 8px;
+    .atividade {
+        gap: 8px;
+        padding: 9px;
     }
 
     .icone {
@@ -290,24 +461,21 @@ Mostrar texto das mensagens anteriores
     }
 
     .acoes {
-        gap: 6px;
-        margin-right: 0;
+        gap: 5px;
     }
 
     .btn-acao {
-        flex-basis: 30px;
-        width: 30px;
-        height: 30px;
+        flex-basis: 29px;
+        width: 29px;
+        height: 29px;
     }
 }
 
-/* RESPONSIVIDADE PARA CELULARES */
-
+/* CELULARES */
 @media (max-width: 600px) {
     body {
-        background-color: #ffffff;
-        padding-bottom: 80px;
-
+        background-color: var(--branco);
+        padding-bottom: 78px;
     }
 
     .menu-lateral {
@@ -318,7 +486,7 @@ Mostrar texto das mensagens anteriores
         width: 100%;
         height: 66px;
         padding: 5px 20px;
-        background: linear-gradient(145deg, #006332, #004b25);
+        background: var(--verde-escuro);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -332,34 +500,44 @@ Mostrar texto das mensagens anteriores
 
     .conteudo {
         width: 100%;
-
         margin-left: 0;
         min-height: auto;
-        padding: 20px 14px;
+        padding: 16px 10px;
         display: block;
     }
 
     .painel {
         width: 100%;
-
         max-width: none;
         min-height: auto;
-        padding: 12px 13px 20px;
-        border: 1px solid #444444;
+        padding: 12px 10px 20px;
+        border: 1px solid var(--cinza-claro);
         border-radius: 8px;
     }
 
     .cabecalho {
-        min-height: 29px;
+        min-height: 32px;
     }
 
     .usuario {
-        font-size: 11px;
+        gap: 7px;
+        font-size: 12px;
+    }
+
+    .icone-usuario {
+        flex-basis: 29px;
+        width: 29px;
+        height: 29px;
+    }
+
+    .icone-usuario img {
+        width: 21px;
+        height: 21px;
     }
 
     .boas-vindas {
         margin-top: 17px;
-        margin-bottom: 20px;
+        margin-bottom: 18px;
     }
 
     .boas-vindas h1 {
@@ -374,28 +552,22 @@ Mostrar texto das mensagens anteriores
         gap: 9px;
     }
 
-    .atividade1,
-    .atividade2,
-    .atividade3,
-    .atividade4,
-    .atividade5,
-    .atividade6 {
+    .atividade {
         min-width: 0;
         min-height: 75px;
         padding: 8px;
-        gap: 8px;
+        gap: 7px;
     }
 
     .icone {
-        flex: 0 0 42px;
-        width: 42px;
-        height: 42px;
+        flex: 0 0 39px;
+        width: 39px;
+        height: 39px;
     }
 
     .descricao {
         flex: 1;
         min-width: 0;
-
     }
 
     .descricao h2 {
@@ -406,36 +578,37 @@ Mostrar texto das mensagens anteriores
         font-size: 10px;
     }
 
+    .descricao .capacidade {
+        font-size: 10px;
+    }
+
     .horario {
-        margin-top: 5px;
+        margin-top: 4px;
         gap: 4px;
     }
 
     .relogio {
         font-size: 14px;
-
     }
 
     .horario p {
         font-size: 9px;
-        line-height: 1.3;
+        line-height: 1.4;
     }
 
     .acoes {
         flex-shrink: 0;
-        gap: 5px;
+        gap: 3px;
         margin-left: auto;
-        margin-right: 0;
     }
 
     .btn-acao {
-        flex-basis: 26px;
-        width: 26px;
-        height: 26px;
+        flex-basis: 24px;
+        width: 24px;
+        height: 24px;
     }
 
     /* MENU INFERIOR FIXO */
-
     .menu-inferior {
         position: fixed;
         bottom: 0;
@@ -443,11 +616,12 @@ Mostrar texto das mensagens anteriores
         width: 100%;
         min-height: 65px;
         padding: 7px 5px;
-        background-color: #ffffff;
-        border-top: 1px solid #e5e5e5;
+        background-color: var(--branco);
+        border-top: 1px solid var(--cinza-claro);
         display: flex;
         justify-content: space-around;
         align-items: center;
+        gap: 3px;
         z-index: 20;
     }
 
@@ -459,53 +633,36 @@ Mostrar texto das mensagens anteriores
         align-items: center;
         justify-content: center;
         gap: 4px;
-        color: #555555;
-        font-size: 9px;
+        color: var(--cinza-escuro);
+        font-size: 10px;
         text-align: center;
-
-    }
-
-    .item-menu img {
-        width: 21px;
-        height: 21px;
-        object-fit: contain;
     }
 
     .item-menu.selecionado {
-        color: #08a82c;
+        color: var(--verde-principal);
         font-weight: bold;
-    }
-
-    .item-menu.selecionado span {
-        color: #08a82c;
     }
 }
 
 /* CELULARES ESTREITOS */
-
 @media (max-width: 360px) {
     .conteudo {
-        padding: 14px 8px;
+        padding: 12px 6px;
     }
 
     .painel {
-        padding: 10px 8px 16px;
+        padding: 10px 6px 16px;
     }
 
-    .atividade1,
-    .atividade2,
-    .atividade3,
-    .atividade4,
-    .atividade5,
-    .atividade6 {
+    .atividade {
         gap: 5px;
         padding: 7px 5px;
     }
 
     .icone {
-        flex-basis: 34px;
-        width: 34px;
-        height: 34px;
+        flex-basis: 32px;
+        width: 32px;
+        height: 32px;
     }
 
     .descricao h2 {
@@ -513,18 +670,19 @@ Mostrar texto das mensagens anteriores
     }
 
     .descricao > p,
-    .horario p {
+    .horario p,
+    .descricao .capacidade {
         font-size: 8px;
     }
 
     .acoes {
-        gap: 3px;
+        gap: 2px;
     }
 
     .btn-acao {
-        flex-basis: 22px;
-        width: 22px;
-        height: 22px;
+        flex-basis: 21px;
+        width: 21px;
+        height: 21px;
     }
 
     .item-menu {

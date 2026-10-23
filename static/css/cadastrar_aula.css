@@ -136,11 +136,7 @@ a {
     background-color: rgba(0, 190, 45, 0.35);
 }
 
-.menu-lateral nav a.ativo {
-    background-color: #0bb52e;
-    border-color: #0bb52e;
-    font-weight: 500;
-}
+
 
 /* Ícones do menu: só aparecem no mobile */
 .icone {

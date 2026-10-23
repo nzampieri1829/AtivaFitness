@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cadastrar Aula - ATIVA Fitness</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/cadastrar_modalidade.css') }}">
+</head>
+
+<body>
+
+    <div class="pagina">
+
+    <!-- Menu lateral -->
+    <aside class="menu-lateral">
+
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logobranca.png') }}" alt="ATIVA Fitness">
+        </div>
+
+        <nav>
+            <a href="{{ url_for('index') }}" class="ativo">Início</a>
+            <a href="{{ url_for('editar_perfil') }}">Perfil</a>
+            <a href="{{ url_for('grade_de_aulas') }}">Grade de Aulas</a>
+            <a href="#">Professores</a>
+            <a href="#">Alunos</a>
+            <a href="{{ url_for('logout') }}">Sair</a>
+        </nav>
+
+    </aside>
+
+            <!-- LOGO -->
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logobranca.png') }}"
+                     alt="Logo ATIVA Fitness">
+            </div>
+
+            <!-- LINKS DO MENU -->
+            <nav class="menu">
+
+                <a href="{{ url_for('redirecionar') }}" class="item">
+                    <span class="icone icone-inicio"></span>
+                    Início
+                </a>
+
+                <a href="{{ url_for('editar_perfil') }}" class="item">
+                    <span class="icone icone-perfil"></span>
+                    Perfil
+                </a>
+
+                <a href="{{ url_for('grade_de_aulas') }}" class="item">
+                    <span class="icone icone-grade"></span>
+                    Aulas
+                </a>
+
+                <a href="{{ url_for('logout') }}" class="item">
+                    <span class="icone icone-sair"></span>
+                    Sair
+                </a>
+
+            </nav>
+
+        </aside>
+
+
+        <!-- CONTEÚDO -->
+        <main class="conteudo">
+
+            <section class="cartao">
+
+                <!-- TÍTULO -->
+                <div class="cabecalho">
+
+                    <h1>Cadastrar modalidade</h1>
+                    <p>
+                        Cadastre uma nova modalidade e configure sua aula.
+                    </p>
+                </div>
+
+
+                <!-- MENSAGENS DO FLASK -->
+                {% with mensagens = get_flashed_messages(with_categories=true) %}
+                    {% if mensagens %}
+                        <div class="mensagens">
+                            {% for categoria, mensagem in mensagens %}
+                                <p class="mensagem {{ categoria }}">
+                                    {{ mensagem }}
+                                </p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+
+                <!-- FORMULÁRIO -->
+                <form class="formulario"
+                      action="{{ url_for('cadastrar_modalidade') }}"
+                      method="POST">
+
+
+                    <!-- NOME DA MODALIDADE -->
+                    <div class="campo">
+
+                        <label for="nome">Nome da modalidade</label>
+
+                        <input
+                            type="text"
+                            id="nome"
+                            name="nome"
+                            placeholder="Ex.: Pilates"
+                            maxlength="100"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- DESCRIÇÃO DA MODALIDADE -->
+                    <div class="campo">
+
+                        <label for="descricao">Descrição</label>
+
+                        <textarea
+                            id="descricao"
+                            name="descricao"
+                            placeholder="Descreva a modalidade"
+                            maxlength="150"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <!-- BOTÃO DE CADASTRO -->
+                    <button type="submit" class="botao">
+                        Cadastrar modalidade
+                    </button>
+
+                </form>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

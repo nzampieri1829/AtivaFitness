@@ -1,137 +1,299 @@
+
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar aula</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/cadastrar_aula.css') }}">
+
+    <title>Cadastrar Aula - ATIVA Fitness</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/cadastrar_aula.css') }}">
 </head>
+
 <body>
 
+    <div class="pagina">
 
-<!-- Menu lateral -->
-<aside class="menu-lateral">
+    <!-- Menu lateral -->
+    <aside class="menu-lateral">
 
-    <div class="logo">
-        <img src="{{ url_for('static', filename='img/logobranca.png') }}"
-             alt="ATIVA Fitness">
-    </div>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logobranca.png') }}" alt="ATIVA Fitness">
+        </div>
 
-    <nav>
-        <a href="{{ url_for('index') }}">Início</a>
-        <a href="{{ url_for('editar_perfil') }}">Perfil</a>
-        <a href="{{ url_for('grade_de_aulas') }}">Grade de Aulas</a>
-        <a href="#">Professores</a>
-        <a href="#">Alunos</a>
-        <a href="{{ url_for('logout') }}">Sair</a>
-    </nav>
+        <nav>
+            <a href="{{ url_for('index') }}" class="ativo">Início</a>
+            <a href="{{ url_for('editar_perfil') }}">Perfil</a>
+            <a href="{{ url_for('grade_de_aulas') }}">Grade de Aulas</a>
+            <a href="#">Professores</a>
+            <a href="#">Alunos</a>
+            <a href="{{ url_for('logout') }}">Sair</a>
+        </nav>
 
-</aside>
+    </aside>
 
+            <!-- LOGO -->
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logobranca.png') }}"
+                     alt="Logo ATIVA Fitness">
+            </div>
+
+            <!-- LINKS DO MENU -->
+            <nav class="menu">
+
+                <a href="{{ url_for('redirecionar') }}" class="item">
+                    <span class="icone icone-inicio"></span>
+                    Início
+                </a>
+
+                <a href="{{ url_for('editar_perfil') }}" class="item">
+                    <span class="icone icone-perfil"></span>
+                    Perfil
+                </a>
+
+                <a href="{{ url_for('grade_de_aulas') }}" class="item">
+                    <span class="icone icone-grade"></span>
+                    Aulas
+                </a>
+
+                <a href="{{ url_for('logout') }}" class="item">
+                    <span class="icone icone-sair"></span>
+                    Sair
+                </a>
+
+            </nav>
+
+        </aside>
+
+
+        <!-- CONTEÚDO -->
         <main class="conteudo">
+
             <section class="cartao">
 
-                <header class="cabecalho">
-                    <h1>Cadastrar aula</h1>
-                    <p>Preencha as informações para cadastrar uma nova aula</p>
-                </header>
+                <!-- TÍTULO -->
+                <div class="cabecalho">
 
+                    <h1>Cadastrar aula</h1>
+
+                    <p>
+                        Cadastre uma nova aula e configure sua aula.
+                    </p>
+
+                </div>
+
+
+                <!-- MENSAGENS DO FLASK -->
                 {% with mensagens = get_flashed_messages(with_categories=true) %}
                     {% if mensagens %}
                         <div class="mensagens">
                             {% for categoria, mensagem in mensagens %}
-                                <p class="mensagem {{ categoria }}">{{ mensagem }}</p>
+                                <p class="mensagem {{ categoria }}">
+                                    {{ mensagem }}
+                                </p>
                             {% endfor %}
                         </div>
                     {% endif %}
                 {% endwith %}
 
 
-                <form class="formulario" action="{{ url_for('cadastrar_aula') }}" method="post">
+                <!-- FORMULÁRIO -->
+                <form class="formulario"
+                      action="{{ url_for('cadastrar_aula') }}"
+                      method="POST">
 
+
+
+
+                    <!-- ESCOLHER MODALIDADE JÁ CADASTRADA -->
                     <div class="campo">
-                        <label for="nome">Nome da aula</label>
-                        <input
-                            type="text"
-                            id="nome"
-                            name="nome"
-                            placeholder="Nome da aula"
-                            required
-                        >
+                        <label for="id_modalidade">Nome da modalidade</label>
+
+                        <select id="id_modalidade" name="id_modalidade" required>
+                            <option value="" disabled selected>
+                                Selecione uma modalidade
+                            </option>
+
+                            {% for modalidade in modalidades %}
+                                <option value="{{ modalidade[0] }}">
+                                    {{ modalidade[1] }}
+                                </option>
+                            {% endfor %}
+                        </select>
                     </div>
 
+
+
+                    <!-- DESCRIÇÃO DA MODALIDADE -->
                     <div class="campo">
+
                         <label for="descricao">Descrição</label>
+
                         <textarea
                             id="descricao"
                             name="descricao"
-                            placeholder="Descrição da aula"
+                            placeholder="Descreva a modalidade"
+                            maxlength="150"
+                            required
                         ></textarea>
+
                     </div>
 
+
+                    <!-- DIAS, HORÁRIO E CAPACIDADE -->
                     <div class="linha">
 
+
+                        <!-- DIAS DA SEMANA -->
                         <div class="campo">
-                            <label>Dia da semana</label>
+
+                            <label>Dias da semana</label>
 
                             <div class="dias-semana">
-                                <label><input type="checkbox" name="dia[]" value="segunda"> Segunda-feira</label>
-                                <label><input type="checkbox" name="dia[]" value="terca"> Terça-feira</label>
-                                <label><input type="checkbox" name="dia[]" value="quarta"> Quarta-feira</label>
-                                <label><input type="checkbox" name="dia[]" value="quinta"> Quinta-feira</label>
-                                <label><input type="checkbox" name="dia[]" value="sexta"> Sexta-feira</label>
-                                <label><input type="checkbox" name="dia[]" value="sabado"> Sábado</label>
+
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="dia[]"
+                                        value="1"
+                                    >
+                                    Segunda-feira
+                                </label>
+
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="dia[]"
+                                        value="2"
+                                    >
+                                    Terça-feira
+                                </label>
+
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="dia[]"
+                                        value="3"
+                                    >
+                                    Quarta-feira
+                                </label>
+
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="dia[]"
+                                        value="4"
+                                    >
+                                    Quinta-feira
+                                </label>
+
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="dia[]"
+                                        value="5"
+                                    >
+                                    Sexta-feira
+                                </label>
+
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="dia[]"
+                                        value="6"
+                                    >
+                                    Sábado
+                                </label>
+
                             </div>
+
                         </div>
 
+
+                        <!-- HORÁRIO -->
                         <div class="campo">
-                            <label for="horario">Horário da aula</label>
-                            <select id="horario" name="horario" required>
-                                <option value="" disabled selected>Selecione o horário</option>
-                                <option value="08:00">08:00h-09:20h</option>
-                                <option value="10:00">10:00h-11:20h</option>
-                                <option value="14:00">14:00h-15:20h</option>
-                                <option value="16:00">16:00h-17:20h</option>
-                                <option value="19:00">19:00h-20:20h</option>
+
+                            <label for="horario">Horário</label>
+
+                            <select
+                                id="horario"
+                                name="horario"
+                                required
+                            >
+
+                                <option value="" disabled selected>
+                                    Selecione
+                                </option>
+
+                                <option value="8">08:00</option>
+                                <option value="10">10:00</option>
+                                <option value="14">14:00</option>
+                                <option value="16">16:00</option>
+                                <option value="19">19:00</option>
+
                             </select>
+
                         </div>
 
+
+                        <!-- CAPACIDADE -->
                         <div class="campo">
-                            <label for="capacidade">Capacidade</label>
+
+                            <label for="capacidade">
+                                Capacidade máxima
+                            </label>
+
                             <input
                                 type="number"
                                 id="capacidade"
                                 name="capacidade"
                                 min="1"
                                 max="18"
-                                placeholder="Ex: 10"
+                                placeholder="Até 18 alunos"
                                 required
                             >
+
                         </div>
 
                     </div>
 
+
+
+
+                    <!-- PROFESSOR RESPONSÁVEL -->
                     <div class="campo">
                         <label for="professor">Selecionar professor responsável</label>
+
                         <select id="professor" name="professor" required>
-                            <option value="" disabled selected>Nome do professor</option>
-                            <option value="1">Ana Martins - Pilates</option>
-                            <option value="2">Carlos Souza - Funcional</option>
-                            <option value="3">Juliana Prado - Spinning</option>
-                            <option value="4">Rafael Lima - Muay Thai</option>
-                            <option value="5">Maria Aparecida - Yoga</option>
-                            <option value="6">Maicon - Ritmos</option>
+                            <option value="" disabled selected>
+                                Selecione um professor
+                            </option>
+
+                            <option value="1">Carlos Silva</option>
+                            <option value="2">Ana Oliveira</option>
+                            <option value="3">Pedro Santos</option>
+                            <option value="4">Mariana Costa</option>
+                            <option value="5">Lucas Ferreira</option>
                         </select>
                     </div>
 
-                    <button type="submit" class="botao">Cadastrar</button>
+
+
+                    <!-- BOTÃO DE CADASTRO -->
+                    <button type="submit" class="botao">
+                        Cadastrar aula
+                    </button>
 
                 </form>
 
             </section>
+
         </main>
 
     </div>
 
 </body>
+
 </html>
